@@ -1,45 +1,138 @@
+/* ─── Design tokens (from design_handoff_telescope_requests/README.md) ────── */
+
 :root {
-  --bg: #0e0f12;
-  --bg-elev: #16181d;
-  --border: #23262d;
-  --text: #e6e8eb;
-  --text-dim: #8b919a;
-  --accent: #7c5cff;
-  --ok: #2ec27e;
-  --warn: #f5a524;
-  --err: #f04444;
+  /* Surfaces & text */
+  --app-bg: #f4f4f5;
+  --surface: #ffffff;
+  --surface-subtle: #fafafb;
+  --border: #ebebef;
+  --border-input: #e4e4e8;
+  --border-faint: #f0f0f3;
+  --border-faintest: #f4f4f6;
+  --text: #18181b;
+  --text-strong: #27272a;
+  --text-secondary: #3f3f46;
+  --text-secondary-2: #52525b;
+  --text-muted: #71717a;
+  --text-faint: #a1a1aa;
+  --text-faintest: #b4b4bc;
+  --text-faintest-2: #c4c4cc;
+
+  /* Accent (indigo) */
+  --accent: #6366f1;
+  --accent-deep: #4f46e5;
+  --accent-tint: #eef0fe;
+  --accent-badge-bg: #e0e3fd;
+  --accent-view-border: #c7c9fb;
+  --chip-active-fill: #18181b;
+  --logo-from: #6366f1;
+  --logo-to: #8b5cf6;
+
+  /* Verb text + bg */
+  --verb-get-text: #3f3f46;        --verb-get-bg: #f1f1f4;
+  --verb-post-text: #1d4ed8;       --verb-post-bg: #dbeafe;
+  --verb-put-text: #b45309;        --verb-put-bg: #fef3c7;
+  --verb-patch-text: #b45309;      --verb-patch-bg: #fef3c7;
+  --verb-delete-text: #b91c1c;     --verb-delete-bg: #fee2e2;
+
+  /* Status class text + bg + dot */
+  --status-2xx-text: #15803d;      --status-2xx-bg: #dcfce7;      --status-2xx-dot: #22c55e;
+  --status-3xx-text: #4f46e5;      --status-3xx-bg: #e0e7ff;      --status-3xx-dot: #6366f1;
+  --status-4xx-text: #b45309;      --status-4xx-bg: #fef3c7;      --status-4xx-dot: #f59e0b;
+  --status-5xx-text: #b91c1c;      --status-5xx-bg: #fee2e2;      --status-5xx-dot: #ef4444;
+
+  /* Threshold colors */
+  --threshold-fast: #3f3f46;
+  --threshold-slow: #b45309;
+  --threshold-slowest: #b91c1c;
+  --threshold-error: #b91c1c;
+  --threshold-ok: #15803d;
+  --threshold-warn-amber: #f59e0b;
+
+  /* Live dot */
+  --live-dot: #22c55e;
+  --live-dot-ring: #dcfce7;
+
+  /* SQL code card (already dark) */
+  --code-bg: #0f0f12;
+  --code-border: #1c1c22;
+  --code-meta: #71717a;
+  --code-text: #d4d4d8;
+
+  /* Radii */
+  --r-badge: 5px;
+  --r-button: 7px;
+  --r-input: 8px;
+  --r-card-sm: 9px;
+  --r-card: 11px;
+  --r-pill: 20px;
+
+  /* Fonts */
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Layout */
+  --header-h: 52px;
+  --sidebar-w: 212px;
+  --gutter: 18px;
+  --drawer-w: 520px;
 }
 
-* { box-sizing: border-box; }
+/* ─── Reset + base ──────────────────────────────────────────────────────── */
 
-html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+*, *::before, *::after { box-sizing: border-box; }
 
-.shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+html, body, #eyepiece {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-.sidebar { background: var(--bg-elev); border-right: 1px solid var(--border); padding: 24px 12px; }
-.brand { font-weight: 700; font-size: 1.1rem; padding: 0 12px 20px; color: var(--accent); }
-.sidebar nav { display: flex; flex-direction: column; gap: 2px; }
-.nav-link { display: block; padding: 8px 12px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.92rem; }
-.nav-link:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.nav-link.active { background: rgba(124, 92, 255, 0.15); color: var(--accent); }
+body {
+  background: var(--app-bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
 
-.content { padding: 32px 40px; }
-.screen-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.screen-header h1 { margin: 0; font-size: 1.4rem; }
-.status { font-size: 0.75rem; padding: 3px 8px; border-radius: 999px; background: var(--bg-elev); color: var(--text-dim); border: 1px solid var(--border); }
-.status-enabled { color: var(--ok); border-color: rgba(46,194,126,0.4); }
-.status-paused, .status-disabled, .status-off { color: var(--warn); border-color: rgba(245,165,36,0.4); }
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
 
-.entries { width: 100%; border-collapse: collapse; }
-.entries th, .entries td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-.entries th { color: var(--text-dim); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
-.entries td.path { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--text); }
+a { color: inherit; text-decoration: none; }
 
-.verb { font-family: ui-monospace, monospace; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; background: var(--bg-elev); }
-.verb-get { color: #6bb6ff; }
-.verb-post { color: var(--ok); }
-.verb-put, .verb-patch { color: var(--warn); }
-.verb-delete { color: var(--err); }
+input {
+  font: inherit;
+  color: inherit;
+}
 
-.state { padding: 24px; color: var(--text-dim); text-align: center; }
-.state.error { color: var(--err); }
+/* ─── App shell ─────────────────────────────────────────────────────────── */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
