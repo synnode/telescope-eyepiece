@@ -108,16 +108,15 @@ export function FilterForm({ value, onChange, statusCounts }: Props) {
         })}
       </div>
 
-      {hasActiveFilters(value) && (
-        <button
-          type="button"
-          className="filter-clear"
-          onClick={() => onChange(EMPTY_FILTERS)}
-        >
-          <X size={12} />
-          Clear
-        </button>
-      )}
+      <button
+        type="button"
+        className="filter-clear"
+        disabled={!hasActiveFilters(value)}
+        onClick={() => onChange(EMPTY_FILTERS)}
+      >
+        <X size={12} />
+        Clear
+      </button>
     </div>
   )
 }

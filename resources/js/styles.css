@@ -515,10 +515,16 @@ input {
   color: var(--accent);
   font-size: 11.5px;
   font-weight: 600;
+  transition: color 0.12s ease, opacity 0.12s ease;
 }
 
-.filter-clear:hover {
+.filter-clear:hover:not(:disabled) {
   color: var(--accent-deep);
+}
+
+.filter-clear:disabled {
+  color: var(--text-faintest);
+  cursor: default;
 }
 
 /* ─── Saved views row ───────────────────────────────────────────────────── */
