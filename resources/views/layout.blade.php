@@ -30,7 +30,7 @@
         <script type="module" src="{{ asset('vendor/eyepiece/'.$entry['file']) }}"></script>
     @else
         <!-- Dev: run `npm run dev` and load Vite directly -->
-        <script type="module" src="http://localhost:5173/@vite/client"></script>
+        <script type="module" src="http://localhost:5173/@@vite/client"></script>
         <script type="module" src="http://localhost:5173/resources/js/main.tsx"></script>
     @endif
 </head>
