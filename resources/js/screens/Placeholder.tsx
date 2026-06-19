@@ -6,7 +6,7 @@ export function PlaceholderScreen() {
     <section>
       <h1 style={{ textTransform: 'capitalize' }}>{pathname.replace('/', '')}</h1>
       <p className="state">
-        Not implemented yet. This is the Eyepiece skeleton — drop your design's screen here.
+        Not implemented yet. This is the Eyepiece skeleton — drop your design&apos;s screen here.
       </p>
     </section>
   )
