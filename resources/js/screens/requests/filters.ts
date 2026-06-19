@@ -72,3 +72,37 @@ function sameSet<T>(a: T[], b: T[]): boolean {
   const s = new Set(a)
   return b.every((x) => s.has(x))
 }
+
+export function readFiltersFromUrl(params: URLSearchParams): RequestFilters {
+  const search = params.get('q') ?? ''
+  const verbs = splitCsv(params.get('v')).filter((v): v is HttpVerb =>
+    VERBS.includes(v as HttpVerb),
+  )
+  const statuses = splitCsv(params.get('s')).filter((s): s is StatusClass =>
+    STATUS_CLASSES.includes(s as StatusClass),
+  )
+  const minDuration = Number(params.get('d')) || 0
+  return { search, verbs, statuses, minDuration }
+}
+
+export function applyFiltersToParams(
+  base: URLSearchParams,
+  f: RequestFilters,
+): URLSearchParams {
+  const next = new URLSearchParams(base)
+  setOrDelete(next, 'q', f.search)
+  setOrDelete(next, 'v', f.verbs.join(','))
+  setOrDelete(next, 's', f.statuses.join(','))
+  setOrDelete(next, 'd', f.minDuration ? String(f.minDuration) : '')
+  return next
+}
+
+function setOrDelete(p: URLSearchParams, key: string, value: string) {
+  if (value) p.set(key, value)
+  else p.delete(key)
+}
+
+function splitCsv(raw: string | null): string[] {
+  if (!raw) return []
+  return raw.split(',').filter(Boolean)
+}
