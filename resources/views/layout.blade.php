@@ -29,7 +29,15 @@
         <link rel="stylesheet" href="{{ asset('vendor/eyepiece/'.$entry['css'][0]) }}">
         <script type="module" src="{{ asset('vendor/eyepiece/'.$entry['file']) }}"></script>
     @else
-        <!-- Dev: run `npm run dev` and load Vite directly -->
+        {{-- Dev: run `npm run dev` and load Vite directly. --}}
+        {{-- React Fast Refresh preamble must run before any TSX module. --}}
+        <script type="module">
+            import RefreshRuntime from 'http://localhost:5173/@@react-refresh'
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
         <script type="module" src="http://localhost:5173/@@vite/client"></script>
         <script type="module" src="http://localhost:5173/resources/js/main.tsx"></script>
     @endif

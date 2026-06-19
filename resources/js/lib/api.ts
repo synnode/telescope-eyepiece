@@ -1,4 +1,9 @@
-import { getCsrfToken } from './telescope'
+import { getCsrfToken, getTelescopePath } from './telescope'
+
+function apiUrl(endpoint: string): string {
+  const base = getTelescopePath().replace(/\/$/, '')
+  return `${base}/telescope-api/${endpoint}`
+}
 
 export type EntryStatus = 'enabled' | 'disabled' | 'paused' | 'off'
 
@@ -27,7 +32,7 @@ export type EntryListParams = {
 }
 
 async function apiPost<T>(endpoint: string, body: Record<string, unknown> = {}): Promise<T> {
-  const res = await fetch(`/telescope-api/${endpoint}`, {
+  const res = await fetch(apiUrl(endpoint), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,7 +49,7 @@ async function apiPost<T>(endpoint: string, body: Record<string, unknown> = {}):
 }
 
 async function apiGet<T>(endpoint: string): Promise<T> {
-  const res = await fetch(`/telescope-api/${endpoint}`, {
+  const res = await fetch(apiUrl(endpoint), {
     headers: { Accept: 'application/json' },
     credentials: 'same-origin',
   })
@@ -100,7 +105,7 @@ export const api = {
   },
   toggleRecording: () => apiPost<void>('toggle-recording'),
   clearEntries: async () => {
-    const res = await fetch('/telescope-api/entries', {
+    const res = await fetch(apiUrl('entries'), {
       method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': getCsrfToken(),
