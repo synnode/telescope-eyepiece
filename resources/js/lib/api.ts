@@ -138,6 +138,21 @@ export type CommandEntryContent = {
   options: Record<string, unknown>
 }
 
+export type MailAddressMap = Record<string, string | null>
+
+export type MailEntryContent = {
+  mailable: string
+  queued: boolean | string
+  from: MailAddressMap
+  replyTo?: MailAddressMap
+  to: MailAddressMap
+  cc?: MailAddressMap
+  bcc?: MailAddressMap
+  subject: string | null
+  html?: string
+  raw?: string
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -180,6 +195,13 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<CommandEntryContent>>('commands', params),
     show: (id: string) => apiGet<EntryShowResponse<CommandEntryContent>>(`commands/${id}`),
+  },
+  mail: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<MailEntryContent>>('mail', params),
+    show: (id: string) => apiGet<EntryShowResponse<MailEntryContent>>(`mail/${id}`),
+    previewUrl: (id: string) => apiUrl(`mail/${id}/preview`),
+    downloadUrl: (id: string) => apiUrl(`mail/${id}/download`),
   },
   exceptions: {
     list: (params: EntryListParams = {}) =>

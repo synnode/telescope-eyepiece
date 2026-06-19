@@ -1495,6 +1495,51 @@ input {
   white-space: nowrap;
 }
 
+/* ─── Mail screen ───────────────────────────────────────────────────────── */
+
+.cell-mail-addr {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-secondary-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-mail-subject {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mail-preview {
+  width: 100%;
+  min-height: 480px;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--r-card-sm);
+  background: #fff;
+}
+
+.detail-section__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.detail-section__action:hover {
+  color: var(--accent-deep);
+}
+
 /* ─── Drawer loading / error state ──────────────────────────────────────── */
 
 .state {

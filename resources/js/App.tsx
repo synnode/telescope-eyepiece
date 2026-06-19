@@ -9,6 +9,7 @@ import { ExceptionsScreen } from './screens/Exceptions'
 import { LogsScreen } from './screens/Logs'
 import { JobsScreen } from './screens/Jobs'
 import { CommandsScreen } from './screens/Commands'
+import { MailScreen } from './screens/Mail'
 import { PlaceholderScreen } from './screens/Placeholder'
 import { api } from './lib/api'
 
@@ -54,6 +55,7 @@ export function App() {
         <Route path="/logs" element={<LogsScreen />} />
         <Route path="/jobs" element={<JobsScreen />} />
         <Route path="/commands" element={<CommandsScreen />} />
+        <Route path="/mail" element={<MailScreen />} />
         <Route path="*" element={<PlaceholderScreen />} />
       </Route>
     </Routes>
