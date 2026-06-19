@@ -5,7 +5,7 @@ function apiUrl(endpoint: string): string {
   return `${base}/telescope-api/${endpoint}`
 }
 
-export type EntryStatus = 'enabled' | 'disabled' | 'paused' | 'off'
+export type EntryStatus = 'enabled' | 'disabled' | 'paused' | 'off' | 'wrong-cache'
 
 export type EntryListResponse<T = unknown> = {
   entries: Array<EntryRow<T>>
@@ -240,6 +240,10 @@ export type BatchEntryContent = {
   allowsFailures?: boolean
 }
 
+export type DumpEntryContent = {
+  dump: string
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -342,6 +346,39 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<BatchEntryContent>>('batches', params),
     show: (id: string) => apiGet<EntryShowResponse<BatchEntryContent>>(`batches/${id}`),
+  },
+  dumps: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<DumpEntryContent> & { dump: string }>('dumps', params),
+  },
+  monitoredTags: {
+    list: () => apiGet<{ tags: string[] }>('monitored-tags'),
+    add: async (tag: string) => {
+      const res = await fetch(apiUrl('monitored-tags/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': getCsrfToken(),
+          Accept: 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ tag }),
+      })
+      if (!res.ok) throw new Error('Failed to add monitored tag')
+    },
+    remove: async (tag: string) => {
+      const res = await fetch(apiUrl('monitored-tags/delete'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': getCsrfToken(),
+          Accept: 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ tag }),
+      })
+      if (!res.ok) throw new Error('Failed to remove monitored tag')
+    },
   },
   exceptions: {
     list: (params: EntryListParams = {}) =>

@@ -20,6 +20,8 @@ import { GatesScreen } from './screens/Gates'
 import { ScheduleScreen } from './screens/Schedule'
 import { ClientRequestsScreen } from './screens/ClientRequests'
 import { BatchesScreen } from './screens/Batches'
+import { DumpsScreen } from './screens/Dumps'
+import { MonitoredTagsScreen } from './screens/MonitoredTags'
 import { PlaceholderScreen } from './screens/Placeholder'
 import { api } from './lib/api'
 
@@ -76,6 +78,8 @@ export function App() {
         <Route path="/schedule" element={<ScheduleScreen />} />
         <Route path="/client-requests" element={<ClientRequestsScreen />} />
         <Route path="/batches" element={<BatchesScreen />} />
+        <Route path="/dumps" element={<DumpsScreen />} />
+        <Route path="/monitored-tags" element={<MonitoredTagsScreen />} />
         <Route path="*" element={<PlaceholderScreen />} />
       </Route>
     </Routes>

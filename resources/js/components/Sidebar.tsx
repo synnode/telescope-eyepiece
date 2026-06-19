@@ -14,6 +14,7 @@ import {
   Mail,
   Server,
   Shield,
+  Tag,
   Terminal,
   TriangleAlert,
   Zap,
@@ -65,6 +66,12 @@ const SECTIONS: NavSection[] = [
       { to: '/gates', label: 'Gates', Icon: Shield },
       { to: '/events', label: 'Events', Icon: Activity },
       { to: '/views', label: 'Views', Icon: Eye },
+    ],
+  },
+  {
+    title: 'Settings',
+    items: [
+      { to: '/monitored-tags', label: 'Monitored Tags', Icon: Tag },
     ],
   },
 ]
