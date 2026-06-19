@@ -19,6 +19,9 @@ type Props<T> = {
   emptyMessage?: string
   isLoading?: boolean
   showChevron?: boolean
+  hasMore?: boolean
+  isLoadingMore?: boolean
+  onLoadMore?: () => void
 }
 
 export function EntryTable<T>({
@@ -32,6 +35,9 @@ export function EntryTable<T>({
   emptyMessage = 'No entries match these filters.',
   isLoading,
   showChevron = true,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
 }: Props<T>) {
   const gridStyle: CSSProperties = { gridTemplateColumns }
 
@@ -96,6 +102,22 @@ export function EntryTable<T>({
               </div>
             )
           })}
+          {rows.length > 0 && onLoadMore && (
+            <div className="entry-table__footer">
+              {hasMore ? (
+                <button
+                  type="button"
+                  className="entry-table__more"
+                  onClick={onLoadMore}
+                  disabled={isLoadingMore}
+                >
+                  {isLoadingMore ? 'Loading…' : 'Load more'}
+                </button>
+              ) : (
+                <span className="entry-table__end">End of list</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

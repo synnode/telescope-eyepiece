@@ -3,6 +3,7 @@ import { useOutletContext, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
 import { api, type EntryRow, type RequestEntryContent } from '../lib/api'
+import { useEntryList } from '../lib/useEntryList'
 import { formatDuration, formatMemoryMB, formatRelative, statusClass } from '../lib/format'
 import { EntryTable, type EntryColumn } from '../components/EntryTable'
 import { VerbBadge } from '../components/VerbBadge'
@@ -54,16 +55,13 @@ export function RequestsScreen() {
     setParams(next, { replace: false })
   }, [params, setParams])
 
-  const listQuery = useQuery({
+  const list = useEntryList<RequestEntryContent>({
     queryKey: ['requests', 'list'],
-    queryFn: () => api.requests.list({ take: 100 }),
-    refetchInterval: isPolling && !selectedId ? 2000 : false,
+    fetcher: api.requests.list,
+    isPolling: isPolling && !selectedId,
   })
 
-  const entries = useMemo(
-    () => listQuery.data?.entries ?? [],
-    [listQuery.data],
-  )
+  const entries = list.rows
   const filtered = useMemo(() => applyFilters(entries, filters), [entries, filters])
 
   const statusCounts = useMemo(() => countByStatus(entries), [entries])
@@ -98,7 +96,10 @@ export function RequestsScreen() {
         getRowKey={(e) => e.id}
         selectedKey={selectedId}
         onRowClick={(e) => openDetail(e.id)}
-        isLoading={listQuery.isLoading}
+        isLoading={list.isLoading}
+        hasMore={list.hasMore}
+        isLoadingMore={list.isLoadingMore}
+        onLoadMore={list.loadMore}
         emptyMessage={
           entries.length === 0
             ? 'No requests recorded yet.'

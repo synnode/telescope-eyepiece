@@ -3,6 +3,7 @@ import { useOutletContext, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
 import { api, type EntryRow, type QueryEntryContent } from '../lib/api'
+import { useEntryList } from '../lib/useEntryList'
 import { formatDuration, formatRelative, percentile } from '../lib/format'
 import { EntryTable, type EntryColumn } from '../components/EntryTable'
 import { EntryDetailDrawer } from '../components/EntryDetailDrawer'
@@ -51,16 +52,13 @@ export function QueriesScreen() {
     setParams(next, { replace: false })
   }, [params, setParams])
 
-  const listQuery = useQuery({
+  const list = useEntryList<QueryEntryContent>({
     queryKey: ['queries', 'list'],
-    queryFn: () => api.queries.list({ take: 100 }),
-    refetchInterval: isPolling && !selectedId ? 2000 : false,
+    fetcher: api.queries.list,
+    isPolling: isPolling && !selectedId,
   })
 
-  const entries = useMemo(
-    () => listQuery.data?.entries ?? [],
-    [listQuery.data],
-  )
+  const entries = list.rows
 
   const filtered = useMemo(() => {
     const needle = search.trim().toLowerCase()
@@ -150,7 +148,10 @@ export function QueriesScreen() {
         getRowKey={(e) => e.id}
         selectedKey={selectedId}
         onRowClick={(e) => openDetail(e.id)}
-        isLoading={listQuery.isLoading}
+        isLoading={list.isLoading}
+        hasMore={list.hasMore}
+        isLoadingMore={list.isLoadingMore}
+        onLoadMore={list.loadMore}
         emptyMessage={
           entries.length === 0
             ? 'No queries recorded yet.'

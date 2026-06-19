@@ -671,6 +671,36 @@ input {
   color: var(--text-faintest-2);
 }
 
+.entry-table__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-faintest);
+}
+
+.entry-table__more {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent);
+  transition: color 0.12s ease;
+}
+
+.entry-table__more:hover:not(:disabled) {
+  color: var(--accent-deep);
+}
+
+.entry-table__more:disabled {
+  color: var(--text-faint);
+  cursor: default;
+}
+
+.entry-table__end {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
 /* ─── Verb badge ────────────────────────────────────────────────────────── */
 
 .verb-badge {
