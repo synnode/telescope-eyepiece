@@ -113,6 +113,31 @@ export type LogEntryContent = {
   context?: Record<string, unknown> | null
 }
 
+export type JobStatus = 'pending' | 'processed' | 'failed'
+
+export type JobEntryContent = {
+  status: JobStatus | string
+  connection: string
+  queue: string
+  name: string
+  tries?: number | null
+  timeout?: number | null
+  data?: Record<string, unknown>
+  exception?: {
+    message: string
+    line: number
+    trace?: Array<{ file?: string; line?: number; function?: string; class?: string }>
+    line_preview?: Record<string, string>
+  }
+}
+
+export type CommandEntryContent = {
+  command: string
+  exit_code: number
+  arguments: Record<string, unknown>
+  options: Record<string, unknown>
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -145,6 +170,16 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<LogEntryContent>>('logs', params),
     show: (id: string) => apiGet<EntryShowResponse<LogEntryContent>>(`logs/${id}`),
+  },
+  jobs: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<JobEntryContent>>('jobs', params),
+    show: (id: string) => apiGet<EntryShowResponse<JobEntryContent>>(`jobs/${id}`),
+  },
+  commands: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<CommandEntryContent>>('commands', params),
+    show: (id: string) => apiGet<EntryShowResponse<CommandEntryContent>>(`commands/${id}`),
   },
   exceptions: {
     list: (params: EntryListParams = {}) =>

@@ -1454,10 +1454,45 @@ input {
   white-space: nowrap;
 }
 
-.log-title {
+.log-title,
+.job-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+/* ─── Outcome badge ─────────────────────────────────────────────────────── */
+
+.outcome-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--r-badge);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.outcome-badge--ok      { color: var(--status-2xx-text); background: var(--status-2xx-bg); }
+.outcome-badge--pending { color: var(--status-3xx-text); background: var(--status-3xx-bg); }
+.outcome-badge--fail    { color: var(--status-5xx-text); background: var(--status-5xx-bg); }
+.outcome-badge--muted   { color: var(--text-muted); background: var(--app-bg); }
+
+/* ─── Job + command cells ───────────────────────────────────────────────── */
+
+.cell-job-name,
+.cell-command {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ─── Drawer loading / error state ──────────────────────────────────────── */
