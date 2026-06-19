@@ -46,7 +46,7 @@
         "prepare": "@php ./vendor/bin/testbench package:discover --ansi",
         "build": [
             "@php ./vendor/bin/testbench package:create-sqlite-db",
-            "@php ./vendor/bin/testbench migrate:fresh --seed"
+            "@php ./vendor/bin/testbench migrate:fresh"
         ],
         "serve": [
             "@composer run build",
