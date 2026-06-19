@@ -569,3 +569,152 @@ input {
   border-color: #d4d4d8;
   color: var(--text-faint);
 }
+
+/* ─── Entry table ───────────────────────────────────────────────────────── */
+
+.entry-table-card {
+  flex: 1;
+  min-height: 0;
+  margin: 6px var(--gutter) 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  overflow: auto;
+}
+
+.entry-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-table__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--surface-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+.entry-table__th {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.entry-table__th.is-right {
+  text-align: right;
+}
+
+.entry-table__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-table__state {
+  padding: 60px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.entry-row {
+  display: grid;
+  gap: 10px;
+  height: 38px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-faintest);
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.08s ease;
+}
+
+.entry-row:hover {
+  background: #f7f7fb;
+}
+
+.entry-row.is-selected {
+  background: var(--accent-tint);
+}
+
+.entry-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.entry-row__cell {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.entry-row__cell.is-right {
+  justify-content: flex-end;
+}
+
+.entry-row__chevron {
+  justify-content: center;
+  color: var(--text-faintest-2);
+}
+
+/* ─── Verb badge ────────────────────────────────────────────────────────── */
+
+.verb-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-badge);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.verb-badge--get    { color: var(--verb-get-text);    background: var(--verb-get-bg); }
+.verb-badge--post   { color: var(--verb-post-text);   background: var(--verb-post-bg); }
+.verb-badge--put    { color: var(--verb-put-text);    background: var(--verb-put-bg); }
+.verb-badge--patch  { color: var(--verb-patch-text);  background: var(--verb-patch-bg); }
+.verb-badge--delete { color: var(--verb-delete-text); background: var(--verb-delete-bg); }
+
+/* ─── Status badge ──────────────────────────────────────────────────────── */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-badge);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.status-badge--2xx { color: var(--status-2xx-text); background: var(--status-2xx-bg); }
+.status-badge--3xx { color: var(--status-3xx-text); background: var(--status-3xx-bg); }
+.status-badge--4xx { color: var(--status-4xx-text); background: var(--status-4xx-bg); }
+.status-badge--5xx { color: var(--status-5xx-text); background: var(--status-5xx-bg); }
+.status-badge--other { color: var(--text-secondary); background: var(--app-bg); }
+
+/* ─── Avatar ────────────────────────────────────────────────────────────── */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  flex-shrink: 0;
+  line-height: 1;
+}
