@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .tsrow:hover { background: #f7f7fb !important; }
+  .navitem:hover { background: #f1f1f4 !important; color: #18181b !important; }
+  .iconbtn:hover { background: #e9e9ee !important; }
+  .chip:hover { border-color: #c7c7d1 !important; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: #d9d9e0; border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #c2c2cc; background-clip: content-box; }
+  @keyframes slideover { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; width:100%; background:#f4f4f5; color:#18181b; overflow:hidden;">
+
+  <!-- ===== Top header ===== -->
+  <header style="display:flex; align-items:center; justify-content:space-between; height:52px; min-height:52px; padding:0 16px; background:#ffffff; border-bottom:1px solid #ebebef;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#6366f1,#8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:15px;">✦</div>
+      <span style="font-size:14px; font-weight:600; letter-spacing:-0.01em;">Laravel Telescope</span>
+      <span style="font-size:13px; color:#a1a1aa;">/</span>
+      <span style="font-size:13px; color:#71717a; font-weight:500;">Synorga</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <div style="display:flex; align-items:center; gap:6px; padding:5px 9px; margin-right:4px; border-radius:7px; background:#f4f4f5; font-size:11.5px; color:#71717a; font-weight:500;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 3px #dcfce7;"></span>
+        Live
+      </div>
+      <button class="iconbtn" style="width:30px; height:30px; border:none; border-radius:7px; background:#f4f4f5; color:#52525b; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .12s;" title="Pause"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+      <button class="iconbtn" style="width:30px; height:30px; border:none; border-radius:7px; background:#f4f4f5; color:#52525b; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .12s;" title="Clear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+      <button class="iconbtn" onClick="{{ refresh }}" style="width:30px; height:30px; border:none; border-radius:7px; background:#6366f1; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Refresh"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></button>
+    </div>
+  </header>
+
+  <div style="display:flex; flex:1; min-height:0;">
+
+    <!-- ===== Sidebar ===== -->
+    <nav style="width:212px; min-width:212px; background:#ffffff; border-right:1px solid #ebebef; padding:10px 10px 16px; overflow-y:auto;">
+      <div style="font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:#a1a1aa; padding:6px 8px 4px;">Watchers</div>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; background:#eef0fe; color:#4f46e5; font-size:12.5px; font-weight:600; text-decoration:none; cursor:pointer; margin-bottom:1px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l-4 5 4 5M17 7l4 5-4 5M14 4l-4 16"/></svg>Requests<span style="margin-left:auto; font-size:10px; font-weight:600; color:#6366f1; background:#e0e3fd; padding:1px 6px; border-radius:20px;">218</span></a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Commands</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Schedule</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Jobs<span style="margin-left:auto; font-size:10px; font-weight:600; color:#a1a1aa;">12</span></a>
+
+      <div style="font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:#a1a1aa; padding:12px 8px 4px;">Data</div>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>Queries<span style="margin-left:auto; font-size:10px; font-weight:600; color:#a1a1aa;">3.4k</span></a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>Models</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 13h7l-1 9 9-11h-7z"/></svg>Cache</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16M16 4v16"/></svg>Redis</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Logs</a>
+
+      <div style="font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:#a1a1aa; padding:12px 8px 4px;">Diagnostics</div>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#dc2626; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M12 12v4M12 8a6 6 0 0 1 6 6v2a6 6 0 0 1-12 0v-2a6 6 0 0 1 6-6zM4 14H2M22 14h-2M5 19l-2 1M19 19l2 1"/></svg>Exceptions<span style="margin-left:auto; font-size:10px; font-weight:700; color:#dc2626; background:#fee2e2; padding:1px 6px; border-radius:20px;">7</span></a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Dumps</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>HTTP Client</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Mail</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>Notifications</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Gates</a>
+      <a class="navitem" style="display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:7px; color:#52525b; font-size:12.5px; font-weight:500; text-decoration:none; cursor:pointer; margin-bottom:1px; transition:background .1s;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4zM2 20h20"/></svg>Views</a>
+    </nav>
+
+    <!-- ===== Content ===== -->
+    <main style="flex:1; min-width:0; display:flex; flex-direction:column;">
+
+      <!-- Title + summary stats -->
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 18px 10px;">
+        <div>
+          <h1 style="margin:0; font-size:17px; font-weight:700; letter-spacing:-0.02em;">Requests</h1>
+          <div style="margin-top:2px; font-size:11.5px; color:#a1a1aa; font-family:'IBM Plex Mono',monospace;">{{ resultLabel }}</div>
+        </div>
+        <div style="display:flex; align-items:stretch; gap:10px;">
+          <div style="display:flex; flex-direction:column; padding:6px 14px; border-radius:9px; background:#ffffff; border:1px solid #ebebef; min-width:78px;">
+            <span style="font-size:10px; color:#a1a1aa; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;">Avg</span>
+            <span style="font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ avgDuration }}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; padding:6px 14px; border-radius:9px; background:#ffffff; border:1px solid #ebebef; min-width:78px;">
+            <span style="font-size:10px; color:#a1a1aa; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;">p95</span>
+            <span style="font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ p95Duration }}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; padding:6px 14px; border-radius:9px; background:#ffffff; border:1px solid #ebebef; min-width:78px;">
+            <span style="font-size:10px; color:#a1a1aa; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;">Errors</span>
+            <span style="font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace; color:{{ errorColor }};">{{ errorCount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Filter form ===== -->
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 18px 10px; margin:0 18px; background:#ffffff; border:1px solid #ebebef; border-radius:11px;">
+        <!-- search -->
+        <div style="position:relative; flex:1; min-width:200px;">
+          <svg style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#a1a1aa;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Filter by path, route, tag…" style="width:100%; height:32px; padding:0 10px 0 30px; border:1px solid #e4e4e8; border-radius:8px; font-size:12.5px; font-family:'IBM Plex Mono',monospace; color:#18181b; outline:none; background:#fafafb;" />
+        </div>
+
+        <div style="width:1px; height:22px; background:#ebebef;"></div>
+
+        <!-- verb chips -->
+        <div style="display:flex; gap:5px;">
+          <sc-for list="{{ verbChips }}" as="c" hint-placeholder-count="5">
+            <button class="chip" onClick="{{ c.toggle }}" style="{{ c.style }}">{{ c.verb }}</button>
+          </sc-for>
+        </div>
+
+        <div style="width:1px; height:22px; background:#ebebef;"></div>
+
+        <!-- status chips -->
+        <div style="display:flex; gap:5px;">
+          <sc-for list="{{ statusChips }}" as="s" hint-placeholder-count="4">
+            <button class="chip" onClick="{{ s.toggle }}" style="{{ s.style }}"><span style="{{ s.dotStyle }}"></span>{{ s.label }}<span style="font-size:10px; opacity:0.65; font-weight:500;">{{ s.count }}</span></button>
+          </sc-for>
+        </div>
+
+        <div style="width:1px; height:22px; background:#ebebef;"></div>
+
+        <!-- duration chips -->
+        <div style="display:flex; gap:5px;">
+          <sc-for list="{{ durationChips }}" as="d" hint-placeholder-count="4">
+            <button class="chip" onClick="{{ d.set }}" style="{{ d.style }}">{{ d.label }}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearFilters }}" style="display:flex; align-items:center; gap:4px; height:28px; padding:0 10px; border:none; border-radius:8px; background:transparent; color:#6366f1; font-size:11.5px; font-weight:600; cursor:pointer; font-family:'IBM Plex Sans',sans-serif;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>Clear</button>
+        </sc-if>
+      </div>
+
+      <!-- saved views -->
+      <div style="display:flex; align-items:center; gap:7px; padding:9px 18px 5px;">
+        <span style="font-size:10px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:#c4c4cc; margin-right:2px;">Views</span>
+        <sc-for list="{{ savedViews }}" as="v" hint-placeholder-count="4">
+          <button onClick="{{ v.apply }}" style="{{ v.style }}">{{ v.label }}</button>
+        </sc-for>
+      </div>
+
+      <!-- ===== Table ===== -->
+      <div style="flex:1; min-height:0; margin:6px 18px 16px; background:#ffffff; border:1px solid #ebebef; border-radius:11px; overflow:auto; display:flex; flex-direction:column;">
+       <div style="min-width:1060px; flex:1; display:flex; flex-direction:column; min-height:0;">
+        <!-- header row -->
+        <div style="position:sticky; top:0; z-index:2; display:grid; grid-template-columns:52px minmax(220px,1fr) 60px 70px 56px 70px 132px 104px 74px 26px; gap:10px; align-items:center; padding:9px 16px; border-bottom:1px solid #ebebef; background:#fafafb; font-size:10px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:#a1a1aa;">
+          <div>Verb</div><div>Path</div><div>Status</div><div style="text-align:right;">Time</div><div style="text-align:right;">SQL</div><div style="text-align:right;">Memory</div><div>User</div><div>IP</div><div style="text-align:right;">When</div><div></div>
+        </div>
+        <!-- body -->
+        <div style="flex:1;">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="14">
+            <div class="tsrow" onClick="{{ r.open }}" style="{{ r.rowStyle }}">
+              <div><span style="{{ r.verbStyle }}">{{ r.verb }}</span></div>
+              <div style="min-width:0; display:flex; align-items:baseline; gap:8px;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:500; color:#27272a; white-space:nowrap; flex-shrink:0; max-width:340px; overflow:hidden; text-overflow:ellipsis;">{{ r.path }}</span>
+                <span style="font-size:10.5px; color:#b4b4bc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex-shrink:1;">{{ r.route }}</span>
+              </div>
+              <div><span style="{{ r.statusStyle }}">{{ r.status }}</span></div>
+              <div style="text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:500; color:{{ r.durColor }};">{{ r.duration }}</div>
+              <div style="text-align:right; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:{{ r.sqlColor }};">{{ r.sql }}</div>
+              <div style="text-align:right; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#71717a;">{{ r.memory }}</div>
+              <div style="display:flex; align-items:center; gap:6px; min-width:0;">
+                <span style="{{ r.avatarStyle }}">{{ r.initials }}</span>
+                <span style="font-size:11.5px; color:#52525b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.user }}</span>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#a1a1aa;">{{ r.ip }}</div>
+              <div style="text-align:right; font-size:11px; color:#a1a1aa; white-space:nowrap;">{{ r.when }}</div>
+              <div style="display:flex; justify-content:center; color:#c4c4cc;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:60px; text-align:center; color:#a1a1aa; font-size:13px;">No requests match these filters.</div>
+          </sc-if>
+        </div>
+       </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== Detail slide-over ===== -->
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePanel }}" style="position:fixed; inset:0; background:rgba(24,24,27,0.28); animation:fadein .15s ease; z-index:40;"></div>
+  </sc-if>
+  <sc-if value="{{ sel }}" hint-placeholder-val="{{ false }}">
+    <aside style="position:fixed; top:0; right:0; bottom:0; width:520px; max-width:92vw; background:#ffffff; border-left:1px solid #ebebef; box-shadow:-12px 0 40px rgba(24,24,27,0.12); animation:fadein .18s ease both; z-index:50; display:flex; flex-direction:column;">
+      <!-- panel head -->
+      <div style="padding:16px 18px 14px; border-bottom:1px solid #ebebef;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <span style="font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:#a1a1aa;">Request detail</span>
+          <button onClick="{{ closePanel }}" class="iconbtn" style="width:28px; height:28px; border:none; border-radius:7px; background:#f4f4f5; color:#52525b; cursor:pointer; display:flex; align-items:center; justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="{{ sel.verbStyle }}">{{ sel.verb }}</span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:#18181b; word-break:break-all;">{{ sel.path }}</span>
+        </div>
+        <div style="margin-top:6px; font-size:11.5px; color:#a1a1aa; font-family:'IBM Plex Mono',monospace;">{{ sel.route }}</div>
+      </div>
+      <!-- panel scroll -->
+      <div style="flex:1; overflow-y:auto; padding:16px 18px 28px;">
+        <!-- metric grid -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:18px;">
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Status</div><div style="margin-top:3px; font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace; color:{{ sel.statusColor }};">{{ sel.status }}</div></div>
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Duration</div><div style="margin-top:3px; font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ sel.duration }}</div></div>
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Memory</div><div style="margin-top:3px; font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ sel.memory }}</div></div>
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">SQL queries</div><div style="margin-top:3px; font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ sel.sql }}</div></div>
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">DB time</div><div style="margin-top:3px; font-size:15px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ sel.dbTime }}</div></div>
+          <div style="padding:9px 11px; border-radius:9px; background:#fafafb; border:1px solid #f0f0f3;"><div style="font-size:9.5px; color:#a1a1aa; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">When</div><div style="margin-top:3px; font-size:13px; font-weight:600; font-family:'IBM Plex Mono',monospace;">{{ sel.when }}</div></div>
+        </div>
+
+        <!-- who -->
+        <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:10px; background:#fafafb; border:1px solid #f0f0f3; margin-bottom:18px;">
+          <span style="{{ sel.bigAvatarStyle }}">{{ sel.initials }}</span>
+          <div style="min-width:0;">
+            <div style="font-size:13px; font-weight:600; color:#18181b;">{{ sel.user }}</div>
+            <div style="font-size:11px; color:#a1a1aa; font-family:'IBM Plex Mono',monospace;">{{ sel.userMeta }}</div>
+          </div>
+          <div style="margin-left:auto; text-align:right;">
+            <div style="font-size:11px; color:#a1a1aa;">IP address</div>
+            <div style="font-size:12px; font-weight:600; font-family:'IBM Plex Mono',monospace; color:#52525b;">{{ sel.ip }}</div>
+          </div>
+        </div>
+
+        <!-- headers -->
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#71717a; margin-bottom:8px;">Request headers</div>
+        <div style="border:1px solid #f0f0f3; border-radius:9px; overflow:hidden; margin-bottom:18px;">
+          <sc-for list="{{ sel.headers }}" as="h" hint-placeholder-count="4">
+            <div style="display:grid; grid-template-columns:140px 1fr; gap:10px; padding:7px 11px; border-bottom:1px solid #f4f4f6; font-family:'IBM Plex Mono',monospace; font-size:11px;"><span style="color:#a1a1aa;">{{ h.k }}</span><span style="color:#3f3f46; word-break:break-all;">{{ h.v }}</span></div>
+          </sc-for>
+        </div>
+
+        <!-- queries -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#71717a;">SQL queries</span>
+          <span style="font-size:11px; color:#a1a1aa; font-family:'IBM Plex Mono',monospace;">{{ sel.sql }} · {{ sel.dbTime }}</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <sc-for list="{{ sel.queries }}" as="q" hint-placeholder-count="3">
+            <div style="padding:9px 11px; border-radius:9px; background:#0f0f12; border:1px solid #1c1c22;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
+                <span style="font-size:9.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:#71717a;">{{ q.conn }}</span>
+                <span style="font-size:10.5px; font-family:'IBM Plex Mono',monospace; color:{{ q.timeColor }};">{{ q.time }}</span>
+              </div>
+              <code style="font-family:'IBM Plex Mono',monospace; font-size:11px; line-height:1.5; color:#d4d4d8; word-break:break-word;">{{ q.sql }}</code>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    search: "",
+    verbs: [],        // active verb filters
+    statuses: [],     // active status classes
+    minDuration: 0,   // ms threshold
+    selectedId: null,
+    seed: 0,
+  };
+
+  data() {
+    if (this._data) return this._data;
+    const mk = (id, verb, path, route, status, dur, sql, dbT, mem, user, ip, when, mins) =>
+      ({ id, verb, path, route, status, dur, sql, dbT, mem, user, ip, when, mins });
+    this._data = [
+      mk(1,"GET","/admin","Admin\\DashboardController@index",200,1062,47,612,"284 MB","Lotte de Vries","82.94.21.7","9s ago",0.15),
+      mk(2,"GET","/","RedirectController@home",302,41,0,0,"18 MB","Guest","82.94.21.7","10s ago",0.17),
+      mk(3,"POST","/login","Auth\\LoginController@store",302,359,4,82,"42 MB","Guest","82.94.21.7","10s ago",0.18),
+      mk(4,"GET","/login","Auth\\LoginController@show",200,63,1,6,"22 MB","Guest","82.94.21.7","11s ago",0.2),
+      mk(5,"GET","/","RedirectController@home",302,48,0,0,"18 MB","Guest","145.7.88.3","11s ago",0.22),
+      mk(6,"GET","/login","Auth\\LoginController@show",200,56,1,5,"22 MB","Guest","145.7.88.3","14s ago",0.27),
+      mk(7,"GET","/","RedirectController@home",302,59,0,0,"18 MB","Guest","9.211.4.66","14s ago",0.28),
+      mk(8,"GET","/repairs/892/edit","RepairController@edit",200,243,28,121,"96 MB","Sven Bakker","92.11.0.4","2m ago",2),
+      mk(9,"PATCH","/repairs/892","RepairController@update",200,512,34,210,"104 MB","Sven Bakker","92.11.0.4","2m ago",2.4),
+      mk(10,"GET","/api/devices?status=open","Api\\DeviceController@index",200,88,6,22,"34 MB","API · synorga-app","10.0.4.12","5m ago",5),
+      mk(11,"DELETE","/repairs/771","RepairController@destroy",403,31,1,4,"24 MB","Sven Bakker","92.11.0.4","6m ago",6),
+      mk(12,"GET","/apple-touch-icon.png","",404,92,0,0,"14 MB","Guest","66.249.79.1","12m ago",12),
+      mk(13,"POST","/api/webhooks/stripe","Api\\WebhookController@stripe",500,1840,9,140,"71 MB","Stripe","54.187.0.9","18m ago",18),
+      mk(14,"GET","/admin/customers","Admin\\CustomerController@index",200,640,52,388,"212 MB","Lotte de Vries","82.94.21.7","24m ago",24),
+      mk(15,"GET","/login","Auth\\LoginController@show",200,70,1,5,"22 MB","Guest","118.4.22.9","31m ago",31),
+      mk(16,"PUT","/admin/settings","Admin\\SettingsController@update",200,176,11,54,"58 MB","Lotte de Vries","82.94.21.7","42m ago",42),
+      mk(17,"GET","/repairs/thank-you","RepairController@thanks",200,72,3,14,"31 MB","Guest","203.0.113.9","1h ago",60),
+      mk(18,"GET","/defects/bd8bb237/resolve","DefectController@resolve",200,144,17,63,"77 MB","Sven Bakker","92.11.0.4","1h ago",62),
+      mk(19,"POST","/api/devices","Api\\DeviceController@store",201,310,21,98,"88 MB","API · synorga-app","10.0.4.12","2h ago",120),
+      mk(20,"GET","/admin/reports/revenue","Admin\\ReportController@revenue",200,2480,86,1420,"341 MB","Lotte de Vries","82.94.21.7","2h ago",128),
+      mk(21,"GET","/health","HealthController@check",200,12,0,0,"11 MB","Guest","10.0.0.1","3h ago",180),
+      mk(22,"GET","/admin","Admin\\DashboardController@index",200,504,41,402,"268 MB","Joost Mulder","145.7.88.3","3h ago",185),
+    ];
+    return this._data;
+  }
+
+  statusClass(s){ return Math.floor(s/100)+"xx"; }
+
+  verbColor(v){
+    const m={GET:["#3f3f46","#f1f1f4"],POST:["#1d4ed8","#dbeafe"],PUT:["#b45309","#fef3c7"],PATCH:["#b45309","#fef3c7"],DELETE:["#b91c1c","#fee2e2"]};
+    return m[v]||m.GET;
+  }
+  statusColors(cls){
+    const m={"2xx":["#15803d","#dcfce7","#22c55e"],"3xx":["#4f46e5","#e0e7ff","#6366f1"],"4xx":["#b45309","#fef3c7","#f59e0b"],"5xx":["#b91c1c","#fee2e2","#ef4444"]};
+    return m[cls]||m["2xx"];
+  }
+  verbBadge(v){const[c,b]=this.verbColor(v);return `display:inline-flex; align-items:center; justify-content:center; min-width:42px; height:20px; padding:0 7px; border-radius:5px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; color:${c}; background:${b};`;}
+  statusBadge(s){const[c,b]=this.statusColors(this.statusClass(s));return `display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:20px; padding:0 6px; border-radius:5px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; color:${c}; background:${b};`;}
+
+  durColor(d){ if(d>=1000) return "#b91c1c"; if(d>=500) return "#b45309"; return "#3f3f46"; }
+  sqlColor(n){ if(n>=50) return "#b45309"; return "#71717a"; }
+  fmtDur(d){ return d>=1000 ? (d/1000).toFixed(2)+"s" : d+"ms"; }
+
+  initials(name){
+    if(name.startsWith("API")||name==="Stripe") return "·";
+    const p=name.split(" ");
+    return ((p[0]?.[0]||"")+(p[1]?.[0]||"")).toUpperCase()||"G";
+  }
+  avatarColor(name){
+    if(name==="Guest") return ["#a1a1aa","#f1f1f4"];
+    if(name.startsWith("API")||name==="Stripe") return ["#7c3aed","#ede9fe"];
+    const palette=[["#0369a1","#e0f2fe"],["#15803d","#dcfce7"],["#b45309","#fef3c7"],["#9333ea","#f3e8ff"],["#be123c","#ffe4e6"]];
+    let h=0; for(const ch of name) h=(h*31+ch.charCodeAt(0))>>>0;
+    return palette[h%palette.length];
+  }
+  avatarStyle(name,size){
+    const[c,b]=this.avatarColor(name);
+    return `display:inline-flex; align-items:center; justify-content:center; width:${size}px; height:${size}px; border-radius:50%; background:${b}; color:${c}; font-size:${size<24?9:11}px; font-weight:700; flex-shrink:0;`;
+  }
+
+  filtered(){
+    const{search,verbs,statuses,minDuration}=this.state;
+    const q=search.trim().toLowerCase();
+    return this.data().filter(r=>{
+      if(q && !(r.path.toLowerCase().includes(q)||r.route.toLowerCase().includes(q)||r.user.toLowerCase().includes(q))) return false;
+      if(verbs.length && !verbs.includes(r.verb)) return false;
+      if(statuses.length && !statuses.includes(this.statusClass(r.status))) return false;
+      if(r.dur<minDuration) return false;
+      return true;
+    });
+  }
+
+  toggleArr(key,val){
+    this.setState(s=>{
+      const arr=s[key].includes(val)?s[key].filter(x=>x!==val):[...s[key],val];
+      return {[key]:arr};
+    });
+  }
+
+  chipBase(active){
+    return `display:inline-flex; align-items:center; gap:5px; height:28px; padding:0 10px; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; border:1px solid ${active?"transparent":"#e4e4e8"}; background:${active?"#18181b":"#ffffff"}; color:${active?"#ffffff":"#52525b"};`;
+  }
+
+  renderVals(){
+    const rows=this.filtered().map(r=>{
+      const selected=this.state.selectedId===r.id;
+      return {
+        ...r,
+        open:()=>this.setState({selectedId:r.id}),
+        rowStyle:`display:grid; grid-template-columns:52px minmax(220px,1fr) 60px 70px 56px 70px 132px 104px 74px 26px; gap:10px; align-items:center; padding:0 16px; height:38px; border-bottom:1px solid #f4f4f6; cursor:pointer; transition:background .1s; ${selected?"background:#eef0fe;":""}`,
+        verbStyle:this.verbBadge(r.verb),
+        statusStyle:this.statusBadge(r.status),
+        duration:this.fmtDur(r.dur),
+        durColor:this.durColor(r.dur),
+        sql:r.sql||"—",
+        sqlColor:this.sqlColor(r.sql),
+        memory:r.mem,
+        route:r.route||"—",
+        initials:this.initials(r.user),
+        avatarStyle:this.avatarStyle(r.user,20),
+        when:r.when,
+        ip:r.ip,
+      };
+    });
+
+    // verb chips
+    const verbList=["GET","POST","PUT","PATCH","DELETE"];
+    const verbChips=verbList.map(v=>{
+      const active=this.state.verbs.includes(v);
+      const[c,b]=this.verbColor(v);
+      return {verb:v,active,toggle:()=>this.toggleArr("verbs",v),
+        style:active?this.chipBase(true):`display:inline-flex; align-items:center; height:28px; padding:0 10px; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; border:1px solid #e4e4e8; background:#ffffff; color:${c};`};
+    });
+
+    // status chips
+    const all=this.data();
+    const statusList=["2xx","3xx","4xx","5xx"];
+    const statusChips=statusList.map(cls=>{
+      const active=this.state.statuses.includes(cls);
+      const[c,b,dot]=this.statusColors(cls);
+      const count=all.filter(r=>this.statusClass(r.status)===cls).length;
+      return {label:cls,count,active,toggle:()=>this.toggleArr("statuses",cls),
+        dotStyle:`display:inline-block; width:7px; height:7px; border-radius:50%; background:${dot};`,
+        style:active?this.chipBase(true):`display:inline-flex; align-items:center; gap:5px; height:28px; padding:0 10px; border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; border:1px solid #e4e4e8; background:#ffffff; color:#52525b;`};
+    });
+
+    // duration chips
+    const durOpts=[{label:"All",v:0},{label:"≥100ms",v:100},{label:"≥500ms",v:500},{label:"≥1s",v:1000}];
+    const durationChips=durOpts.map(o=>{
+      const active=this.state.minDuration===o.v;
+      return {label:o.label,active,set:()=>this.setState({minDuration:o.v}),style:this.chipBase(active)};
+    });
+
+    // saved views
+    const viewBase=(active)=>`height:26px; padding:0 11px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; border:1px solid ${active?"#c7c9fb":"#ececef"}; background:${active?"#eef0fe":"#ffffff"}; color:${active?"#4f46e5":"#71717a"}; font-family:'IBM Plex Sans',sans-serif;`;
+    const slow=this.state.minDuration===500;
+    const errOnly=this.state.statuses.length===2&&this.state.statuses.includes("4xx")&&this.state.statuses.includes("5xx");
+    const writes=this.state.verbs.length===3&&["POST","PUT","PATCH"].every(v=>this.state.verbs.includes(v));
+    const savedViews=[
+      {label:"Slow (≥500ms)",style:viewBase(slow),apply:()=>this.setState({minDuration:slow?0:500})},
+      {label:"Errors only",style:viewBase(errOnly),apply:()=>this.setState({statuses:errOnly?[]:["4xx","5xx"],verbs:[]})},
+      {label:"Writes",style:viewBase(writes),apply:()=>this.setState({verbs:writes?[]:["POST","PUT","PATCH"]})},
+      {label:"+ New view",style:`height:26px; padding:0 11px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; border:1px dashed #d4d4d8; background:transparent; color:#a1a1aa; font-family:'IBM Plex Sans',sans-serif;`,apply:()=>{}},
+    ];
+
+    // stats over filtered
+    const f=this.filtered();
+    const durs=f.map(r=>r.dur).sort((a,b)=>a-b);
+    const avg=durs.length?Math.round(durs.reduce((a,b)=>a+b,0)/durs.length):0;
+    const p95=durs.length?durs[Math.min(durs.length-1,Math.floor(durs.length*0.95))]:0;
+    const errCount=f.filter(r=>r.status>=400).length;
+
+    // selected detail
+    const selRaw=this.data().find(r=>r.id===this.state.selectedId);
+    let sel=false;
+    if(selRaw){
+      const[sc]=this.statusColors(this.statusClass(selRaw.status));
+      sel={
+        ...selRaw,
+        verbStyle:this.verbBadge(selRaw.verb),
+        status:selRaw.status,
+        statusColor:sc,
+        duration:this.fmtDur(selRaw.dur),
+        memory:selRaw.mem,
+        sql:selRaw.sql||"0",
+        dbTime:this.fmtDur(selRaw.dbT),
+        route:selRaw.route||"closure",
+        initials:this.initials(selRaw.user),
+        bigAvatarStyle:this.avatarStyle(selRaw.user,38),
+        userMeta:selRaw.user==="Guest"?"Unauthenticated":(selRaw.user.startsWith("API")?"Token auth":"user #"+selRaw.id+" · admin"),
+        headers:[
+          {k:"Host",v:"app.synorga.nl"},
+          {k:"User-Agent",v:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15)"},
+          {k:"Accept",v:"text/html,application/xhtml+xml"},
+          {k:"X-Forwarded-For",v:selRaw.ip},
+        ],
+        queries:this.mkQueries(selRaw),
+      };
+    }
+
+    const hasFilters=this.state.search||this.state.verbs.length||this.state.statuses.length||this.state.minDuration>0;
+
+    return {
+      rows,
+      empty:rows.length===0,
+      verbChips, statusChips, durationChips, savedViews,
+      search:this.state.search,
+      onSearch:(e)=>this.setState({search:e.target.value}),
+      clearFilters:()=>this.setState({search:"",verbs:[],statuses:[],minDuration:0}),
+      hasFilters:!!hasFilters,
+      resultLabel:`${f.length} of ${this.data().length} requests · last 3h`,
+      avgDuration:this.fmtDur(avg),
+      p95Duration:this.fmtDur(p95),
+      errorCount:errCount,
+      errorColor:errCount>0?"#b91c1c":"#15803d",
+      sel,
+      panelOpen:!!selRaw,
+      closePanel:()=>this.setState({selectedId:null}),
+      refresh:()=>this.setState(s=>({seed:s.seed+1})),
+    };
+  }
+
+  mkQueries(r){
+    if(!r.sql) return [{conn:"—",time:"0ms",timeColor:"#71717a",sql:"No queries recorded for this request."}];
+    const tot=r.dbT;
+    const samples=[
+      {sql:`select * from \`users\` where \`id\` = ? limit 1`,t:Math.round(tot*0.12)},
+      {sql:`select * from \`repairs\` where \`status\` = ? order by \`created_at\` desc`,t:Math.round(tot*0.41)},
+      {sql:`select count(*) as aggregate from \`defects\` where \`repair_id\` in (?, ?, ?)`,t:Math.round(tot*0.28)},
+      {sql:`update \`sessions\` set \`last_activity\` = ? where \`id\` = ?`,t:Math.round(tot*0.19)},
+    ];
+    return samples.map(s=>({conn:"mysql",time:s.t+"ms",timeColor:s.t>=80?"#f59e0b":"#71717a",sql:s.sql}));
+  }
+}
+</script>
+</body>
+</html>
