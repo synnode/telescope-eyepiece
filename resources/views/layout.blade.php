@@ -32,14 +32,14 @@
         {{-- Dev: run `npm run dev` and load Vite directly. --}}
         {{-- React Fast Refresh preamble must run before any TSX module. --}}
         <script type="module">
-            import RefreshRuntime from 'http://localhost:5173/@@react-refresh'
+            import RefreshRuntime from 'http://localhost:5175/@@react-refresh'
             RefreshRuntime.injectIntoGlobalHook(window)
             window.$RefreshReg$ = () => {}
             window.$RefreshSig$ = () => (type) => type
             window.__vite_plugin_react_preamble_installed__ = true
         </script>
-        <script type="module" src="http://localhost:5173/@@vite/client"></script>
-        <script type="module" src="http://localhost:5173/resources/js/main.tsx"></script>
+        <script type="module" src="http://localhost:5175/@@vite/client"></script>
+        <script type="module" src="http://localhost:5175/resources/js/main.tsx"></script>
     @endif
 </head>
 <body>
