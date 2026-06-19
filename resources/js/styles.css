@@ -1540,6 +1540,37 @@ input {
   color: var(--accent-deep);
 }
 
+/* ─── Generic mono cell ─────────────────────────────────────────────────── */
+
+.cell-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-mono--muted {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ─── Batch progress bar ────────────────────────────────────────────────── */
+
+.batch-progress {
+  height: 6px;
+  background: var(--border-faint);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.batch-progress__bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
 /* ─── Drawer loading / error state ──────────────────────────────────────── */
 
 .state {

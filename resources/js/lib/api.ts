@@ -153,6 +153,93 @@ export type MailEntryContent = {
   raw?: string
 }
 
+export type CacheEntryContent = {
+  type: 'hit' | 'missed' | 'forgotten' | 'written' | string
+  key: string
+  value?: unknown
+  expiration?: number | null
+}
+
+export type ClientRequestEntryContent = {
+  method: string
+  uri: string
+  headers?: Record<string, string | string[]>
+  payload?: Record<string, unknown>
+  response_status?: number
+  response_headers?: Record<string, string | string[]>
+  response?: unknown
+  duration?: number | string | null
+}
+
+export type NotificationEntryContent = {
+  notification: string
+  queued: boolean
+  notifiable: string
+  channel: string
+  response?: unknown
+}
+
+export type EventEntryContent = {
+  name: string
+  payload?: Record<string, unknown> | null
+  listeners?: Array<string | { name: string; queued?: boolean }>
+  broadcast?: boolean
+}
+
+export type GateEntryContent = {
+  ability: string
+  result: 'allowed' | 'denied' | string
+  message?: string | null
+  arguments?: unknown[]
+  file?: string | null
+  line?: number | null
+}
+
+export type ModelEntryContent = {
+  action: 'created' | 'updated' | 'deleted' | 'restored' | 'retrieved' | string
+  model: string
+  changes?: Record<string, unknown> | null
+  count?: number
+}
+
+export type RedisEntryContent = {
+  connection: string
+  command: string
+  time: number | string
+}
+
+export type ViewEntryContent = {
+  name: string
+  path?: string
+  data?: string[] | Record<string, unknown>
+  composers?: string[]
+}
+
+export type ScheduleEntryContent = {
+  command: string
+  description?: string | null
+  expression: string
+  timezone?: string | null
+  user?: string | null
+  output?: string | null
+}
+
+export type BatchEntryContent = {
+  id: string
+  name?: string | null
+  totalJobs: number
+  pendingJobs: number
+  processedJobs?: number
+  failedJobs: number
+  progress?: number
+  cancelledAt?: string | null
+  finishedAt?: string | null
+  createdAt?: string | null
+  queue?: string
+  connection?: string
+  allowsFailures?: boolean
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -202,6 +289,59 @@ export const api = {
     show: (id: string) => apiGet<EntryShowResponse<MailEntryContent>>(`mail/${id}`),
     previewUrl: (id: string) => apiUrl(`mail/${id}/preview`),
     downloadUrl: (id: string) => apiUrl(`mail/${id}/download`),
+  },
+  cache: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<CacheEntryContent>>('cache', params),
+    show: (id: string) => apiGet<EntryShowResponse<CacheEntryContent>>(`cache/${id}`),
+  },
+  clientRequests: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<ClientRequestEntryContent>>('client-requests', params),
+    show: (id: string) =>
+      apiGet<EntryShowResponse<ClientRequestEntryContent>>(`client-requests/${id}`),
+  },
+  notifications: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<NotificationEntryContent>>('notifications', params),
+    show: (id: string) =>
+      apiGet<EntryShowResponse<NotificationEntryContent>>(`notifications/${id}`),
+  },
+  events: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<EventEntryContent>>('events', params),
+    show: (id: string) => apiGet<EntryShowResponse<EventEntryContent>>(`events/${id}`),
+  },
+  gates: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<GateEntryContent>>('gates', params),
+    show: (id: string) => apiGet<EntryShowResponse<GateEntryContent>>(`gates/${id}`),
+  },
+  models: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<ModelEntryContent>>('models', params),
+    show: (id: string) => apiGet<EntryShowResponse<ModelEntryContent>>(`models/${id}`),
+  },
+  redis: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<RedisEntryContent>>('redis', params),
+    show: (id: string) => apiGet<EntryShowResponse<RedisEntryContent>>(`redis/${id}`),
+  },
+  views: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<ViewEntryContent>>('views', params),
+    show: (id: string) => apiGet<EntryShowResponse<ViewEntryContent>>(`views/${id}`),
+  },
+  schedule: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<ScheduleEntryContent>>('schedule', params),
+    show: (id: string) =>
+      apiGet<EntryShowResponse<ScheduleEntryContent>>(`schedule/${id}`),
+  },
+  batches: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<BatchEntryContent>>('batches', params),
+    show: (id: string) => apiGet<EntryShowResponse<BatchEntryContent>>(`batches/${id}`),
   },
   exceptions: {
     list: (params: EntryListParams = {}) =>

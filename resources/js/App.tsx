@@ -10,6 +10,16 @@ import { LogsScreen } from './screens/Logs'
 import { JobsScreen } from './screens/Jobs'
 import { CommandsScreen } from './screens/Commands'
 import { MailScreen } from './screens/Mail'
+import { CacheScreen } from './screens/Cache'
+import { RedisScreen } from './screens/Redis'
+import { ViewsScreen } from './screens/Views'
+import { ModelsScreen } from './screens/Models'
+import { NotificationsScreen } from './screens/Notifications'
+import { EventsScreen } from './screens/Events'
+import { GatesScreen } from './screens/Gates'
+import { ScheduleScreen } from './screens/Schedule'
+import { ClientRequestsScreen } from './screens/ClientRequests'
+import { BatchesScreen } from './screens/Batches'
 import { PlaceholderScreen } from './screens/Placeholder'
 import { api } from './lib/api'
 
@@ -56,6 +66,16 @@ export function App() {
         <Route path="/jobs" element={<JobsScreen />} />
         <Route path="/commands" element={<CommandsScreen />} />
         <Route path="/mail" element={<MailScreen />} />
+        <Route path="/cache" element={<CacheScreen />} />
+        <Route path="/redis" element={<RedisScreen />} />
+        <Route path="/views" element={<ViewsScreen />} />
+        <Route path="/models" element={<ModelsScreen />} />
+        <Route path="/notifications" element={<NotificationsScreen />} />
+        <Route path="/events" element={<EventsScreen />} />
+        <Route path="/gates" element={<GatesScreen />} />
+        <Route path="/schedule" element={<ScheduleScreen />} />
+        <Route path="/client-requests" element={<ClientRequestsScreen />} />
+        <Route path="/batches" element={<BatchesScreen />} />
         <Route path="*" element={<PlaceholderScreen />} />
       </Route>
     </Routes>
