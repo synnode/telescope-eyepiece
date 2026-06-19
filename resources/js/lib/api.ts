@@ -83,9 +83,10 @@ export type RequestEntryContent = {
 
 export type QueryEntryContent = {
   connection: string
+  driver?: string
   bindings: unknown[]
   sql: string
-  time: number
+  time: number | string
   slow?: boolean
   file?: string
   line?: number
@@ -102,6 +103,11 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<RequestEntryContent>>('requests', params),
     show: (id: string) => apiGet<EntryShowResponse<RequestEntryContent>>(`requests/${id}`),
+  },
+  queries: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<QueryEntryContent>>('queries', params),
+    show: (id: string) => apiGet<EntryShowResponse<QueryEntryContent>>(`queries/${id}`),
   },
   toggleRecording: () => apiPost<void>('toggle-recording'),
   clearEntries: async () => {

@@ -24,7 +24,7 @@ export function RequestDetailBody({ detail }: Props) {
   )
 
   const dbTime = useMemo(
-    () => queries.reduce((sum, q) => sum + (q.content?.time ?? 0), 0),
+    () => queries.reduce((sum, q) => sum + toNumber(q.content?.time), 0),
     [queries],
   )
 
@@ -150,10 +150,10 @@ function QueriesBlock({
               <span
                 className={
                   'code-card__time' +
-                  (q.content.time >= 80 ? ' is-slow' : '')
+                  (toNumber(q.content.time) >= 80 ? ' is-slow' : '')
                 }
               >
-                {formatDuration(q.content.time)}
+                {formatDuration(toNumber(q.content.time))}
               </span>
             </div>
             <pre className="code-card__sql">{q.content.sql}</pre>

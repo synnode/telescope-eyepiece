@@ -1088,6 +1088,32 @@ input {
   color: var(--text-faint);
 }
 
+.cell-conn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cell-sql-row {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-location {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ─── Drawer loading / error state ──────────────────────────────────────── */
 
 .state {
