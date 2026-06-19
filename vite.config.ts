@@ -9,7 +9,7 @@ export default defineConfig({
     emptyOutDir: true,
     manifest: true,
     rollupOptions: {
-      input: resolve(__dirname, 'resources/js/app.tsx'),
+      input: resolve(__dirname, 'resources/js/main.tsx'),
     },
   },
   server: {

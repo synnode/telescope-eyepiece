@@ -18,7 +18,7 @@
         $manifest = file_exists($manifestPath)
             ? json_decode(file_get_contents($manifestPath), true)
             : null;
-        $entry = $manifest['resources/js/app.tsx'] ?? null;
+        $entry = $manifest['resources/js/main.tsx'] ?? null;
     @endphp
 
     <script>
@@ -31,7 +31,7 @@
     @else
         <!-- Dev: run `npm run dev` and load Vite directly -->
         <script type="module" src="http://localhost:5173/@vite/client"></script>
-        <script type="module" src="http://localhost:5173/resources/js/app.tsx"></script>
+        <script type="module" src="http://localhost:5173/resources/js/main.tsx"></script>
     @endif
 </head>
 <body>
