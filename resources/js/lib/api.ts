@@ -81,6 +81,22 @@ export type RequestEntryContent = {
   middleware?: string[]
 }
 
+export type ExceptionTraceFrame = {
+  file?: string
+  line?: number
+}
+
+export type ExceptionEntryContent = {
+  class: string
+  file: string
+  line: number
+  message: string
+  context?: Record<string, unknown> | null
+  trace: ExceptionTraceFrame[]
+  line_preview: Record<string, string>
+  resolved_at?: string | null
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -108,6 +124,25 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<QueryEntryContent>>('queries', params),
     show: (id: string) => apiGet<EntryShowResponse<QueryEntryContent>>(`queries/${id}`),
+  },
+  exceptions: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<ExceptionEntryContent>>('exceptions', params),
+    show: (id: string) => apiGet<EntryShowResponse<ExceptionEntryContent>>(`exceptions/${id}`),
+    resolve: async (id: string) => {
+      const res = await fetch(apiUrl(`exceptions/${id}`), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': getCsrfToken(),
+          Accept: 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ resolved_at: 'now' }),
+      })
+      if (!res.ok) throw new Error('Failed to resolve exception')
+      return res.json() as Promise<EntryShowResponse<ExceptionEntryContent>>
+    },
   },
   toggleRecording: () => apiPost<void>('toggle-recording'),
   clearEntries: async () => {

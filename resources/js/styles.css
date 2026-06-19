@@ -1144,6 +1144,206 @@ input {
   white-space: nowrap;
 }
 
+/* ─── Exceptions table cells ────────────────────────────────────────────── */
+
+.cell-exc-class {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--threshold-error);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-exc-class.is-resolved {
+  color: var(--text-faint);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.cell-exc-message {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Exception detail body ─────────────────────────────────────────────── */
+
+.exc-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.exc-meta__class {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+
+.exc-meta__when {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.exc-message {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-left: 3px solid var(--threshold-error);
+  border-radius: var(--r-card-sm);
+  padding: 10px 12px;
+}
+
+.exc-message.is-resolved {
+  background: var(--surface-subtle);
+  border-color: var(--border-faint);
+  border-left-color: var(--text-faint);
+}
+
+.exc-message pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--threshold-error);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.exc-message.is-resolved pre {
+  color: var(--text-muted);
+}
+
+.exc-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-resolve {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--r-button);
+  background: var(--accent);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: background 0.12s ease;
+}
+
+.btn-resolve:hover:not(:disabled) {
+  background: var(--accent-deep);
+}
+
+.btn-resolve:disabled {
+  background: var(--text-faint);
+  cursor: default;
+}
+
+.exc-resolved-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--r-button);
+  background: var(--status-2xx-bg);
+  color: var(--status-2xx-text);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.exc-title {
+  word-break: break-all;
+}
+
+/* ─── Code listing (line preview) ───────────────────────────────────────── */
+
+.code-listing {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.code-listing__row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  padding: 0 2px;
+}
+
+.code-listing__row.is-error {
+  background: rgba(239, 68, 68, 0.18);
+  border-radius: 2px;
+}
+
+.code-listing__num {
+  color: var(--code-meta);
+  text-align: right;
+  user-select: none;
+}
+
+.code-listing__row.is-error .code-listing__num {
+  color: var(--status-5xx-dot);
+  font-weight: 700;
+}
+
+.code-listing__line {
+  margin: 0;
+  color: var(--code-text);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ─── Trace list ────────────────────────────────────────────────────────── */
+
+.trace-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--r-card-sm);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.trace-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 8px;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border-faint);
+  align-items: baseline;
+}
+
+.trace-row:last-child { border-bottom: 0; }
+
+.trace-row__idx {
+  color: var(--text-faint);
+}
+
+.trace-row__file {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trace-row__line {
+  color: var(--text-faint);
+}
+
 /* ─── Drawer loading / error state ──────────────────────────────────────── */
 
 .state {
