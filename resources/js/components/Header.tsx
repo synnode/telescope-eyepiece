@@ -1,4 +1,4 @@
-import { Pause, Play, RefreshCw, Trash2 } from 'lucide-react'
+import { Menu, Pause, Play, RefreshCw, Trash2 } from 'lucide-react'
 import { Logo } from './Logo'
 
 type Props = {
@@ -7,12 +7,28 @@ type Props = {
   onPauseToggle: () => void
   onClear: () => void
   onRefresh: () => void
+  onMenuToggle: () => void
 }
 
-export function Header({ appName, isPolling, onPauseToggle, onClear, onRefresh }: Props) {
+export function Header({
+  appName,
+  isPolling,
+  onPauseToggle,
+  onClear,
+  onRefresh,
+  onMenuToggle,
+}: Props) {
   return (
     <header className="app-header">
       <div className="app-header__left">
+        <button
+          type="button"
+          className="icon-btn app-header__menu"
+          aria-label="Toggle navigation"
+          onClick={onMenuToggle}
+        >
+          <Menu size={16} />
+        </button>
         <Logo />
         <span className="brand">Laravel Telescope</span>
         {appName && (

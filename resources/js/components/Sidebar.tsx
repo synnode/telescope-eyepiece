@@ -69,35 +69,50 @@ const SECTIONS: NavSection[] = [
   },
 ]
 
-export function Sidebar() {
+type Props = {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function Sidebar({ isOpen, onClose }: Props) {
   return (
-    <aside className="sidebar">
-      {SECTIONS.map((section) => (
-        <div key={section.title} className="sidebar__section">
-          <div className="sidebar__section-label">{section.title}</div>
-          <nav className="sidebar__nav">
-            {section.items.map(({ to, label, Icon, count, danger }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  [
-                    'sidebar__item',
-                    isActive ? 'is-active' : '',
-                    danger ? 'is-danger' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
-                }
-              >
-                <Icon size={15} strokeWidth={2} className="sidebar__icon" />
-                <span className="sidebar__label">{label}</span>
-                {count !== undefined && <span className="sidebar__count">{count}</span>}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-      ))}
-    </aside>
+    <>
+      {isOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+      <aside className={'sidebar' + (isOpen ? ' is-open' : '')}>
+        {SECTIONS.map((section) => (
+          <div key={section.title} className="sidebar__section">
+            <div className="sidebar__section-label">{section.title}</div>
+            <nav className="sidebar__nav">
+              {section.items.map(({ to, label, Icon, count, danger }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  onClick={onClose}
+                  className={({ isActive }) =>
+                    [
+                      'sidebar__item',
+                      isActive ? 'is-active' : '',
+                      danger ? 'is-danger' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')
+                  }
+                >
+                  <Icon size={15} strokeWidth={2} className="sidebar__icon" />
+                  <span className="sidebar__label">{label}</span>
+                  {count !== undefined && <span className="sidebar__count">{count}</span>}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        ))}
+      </aside>
+    </>
   )
 }

@@ -13,6 +13,7 @@ export type ShellContext = {
 
 function Shell() {
   const [isPolling, setIsPolling] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const queryClient = useQueryClient()
 
   return (
@@ -25,9 +26,10 @@ function Shell() {
           await queryClient.invalidateQueries()
         }}
         onRefresh={() => queryClient.invalidateQueries()}
+        onMenuToggle={() => setIsSidebarOpen((open) => !open)}
       />
       <div className="app-body">
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <main className="main">
           <Outlet context={{ isPolling } satisfies ShellContext} />
         </main>
