@@ -56,6 +56,12 @@ async function apiGet<T>(endpoint: string): Promise<T> {
 
 // --- typed endpoints ---------------------------------------------------
 
+export type RequestUser = {
+  id: string | number
+  name: string | null
+  email?: string | null
+}
+
 export type RequestEntryContent = {
   method: string
   uri: string
@@ -64,13 +70,33 @@ export type RequestEntryContent = {
   duration: number | string | null
   ip_address?: string
   memory?: number
+  user?: RequestUser
+  headers?: Record<string, string | string[]>
+  payload?: Record<string, unknown>
+  middleware?: string[]
+}
+
+export type QueryEntryContent = {
+  connection: string
+  bindings: unknown[]
+  sql: string
+  time: number
+  slow?: boolean
+  file?: string
+  line?: number
+  hash?: string
+}
+
+export type EntryShowResponse<T = unknown> = {
+  entry: EntryRow<T> & { batch_id: string; sequence: number }
+  batch: Array<EntryRow<unknown>>
 }
 
 export const api = {
   requests: {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<RequestEntryContent>>('requests', params),
-    show: (id: string) => apiGet<{ entry: EntryRow<RequestEntryContent> }>(`requests/${id}`),
+    show: (id: string) => apiGet<EntryShowResponse<RequestEntryContent>>(`requests/${id}`),
   },
   toggleRecording: () => apiPost<void>('toggle-recording'),
   clearEntries: async () => {
