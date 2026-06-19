@@ -16,5 +16,8 @@ export default defineConfig({
     port: 5175,
     strictPort: true,
     cors: true,
+    watch: {
+      ignored: ['**/vendor/**', '**/node_modules/**', '**/public/**'],
+    },
   },
 })
