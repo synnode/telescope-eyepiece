@@ -6,6 +6,7 @@ import { Sidebar } from './components/Sidebar'
 import { RequestsScreen } from './screens/Requests'
 import { QueriesScreen } from './screens/Queries'
 import { ExceptionsScreen } from './screens/Exceptions'
+import { LogsScreen } from './screens/Logs'
 import { PlaceholderScreen } from './screens/Placeholder'
 import { api } from './lib/api'
 
@@ -48,6 +49,7 @@ export function App() {
         <Route path="/requests" element={<RequestsScreen />} />
         <Route path="/queries" element={<QueriesScreen />} />
         <Route path="/exceptions" element={<ExceptionsScreen />} />
+        <Route path="/logs" element={<LogsScreen />} />
         <Route path="*" element={<PlaceholderScreen />} />
       </Route>
     </Routes>

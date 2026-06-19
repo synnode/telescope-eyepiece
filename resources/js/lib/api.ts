@@ -97,6 +97,22 @@ export type ExceptionEntryContent = {
   resolved_at?: string | null
 }
 
+export type LogLevel =
+  | 'emergency'
+  | 'alert'
+  | 'critical'
+  | 'error'
+  | 'warning'
+  | 'notice'
+  | 'info'
+  | 'debug'
+
+export type LogEntryContent = {
+  level: LogLevel | string
+  message: string
+  context?: Record<string, unknown> | null
+}
+
 export type QueryEntryContent = {
   connection: string
   driver?: string
@@ -124,6 +140,11 @@ export const api = {
     list: (params: EntryListParams = {}) =>
       apiPost<EntryListResponse<QueryEntryContent>>('queries', params),
     show: (id: string) => apiGet<EntryShowResponse<QueryEntryContent>>(`queries/${id}`),
+  },
+  logs: {
+    list: (params: EntryListParams = {}) =>
+      apiPost<EntryListResponse<LogEntryContent>>('logs', params),
+    show: (id: string) => apiGet<EntryShowResponse<LogEntryContent>>(`logs/${id}`),
   },
   exceptions: {
     list: (params: EntryListParams = {}) =>
