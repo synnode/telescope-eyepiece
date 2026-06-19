@@ -1,0 +1,19 @@
+providers:
+  - Laravel\Telescope\TelescopeServiceProvider
+  - Laravel\Sentinel\SentinelServiceProvider
+  - Eyepiece\EyepieceServiceProvider
+  - Workbench\App\Providers\TelescopeServiceProvider
+
+migrations:
+  - vendor/laravel/telescope/database/migrations
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: '/telescope'
+  user: test@example.com
+  build:
+    - asset-publish
+    - create-sqlite-db
+    - db-wipe

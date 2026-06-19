@@ -8,9 +8,22 @@
         "laravel/framework": "^10.0|^11.0|^12.0|^13.0",
         "laravel/telescope": "^5.0"
     },
+    "require-dev": {
+        "orchestra/testbench": "^8.36|^9.15|^10.8|^11.0",
+        "pestphp/pest": "^2.36|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.4|^3.0",
+        "phpstan/phpstan": "^1.12|^2.0"
+    },
     "autoload": {
         "psr-4": {
             "Eyepiece\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Eyepiece\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\": "workbench/database/"
         }
     },
     "extra": {
@@ -20,6 +33,26 @@
             ]
         }
     },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": "@composer run prepare",
+        "prepare": "@php ./vendor/bin/testbench package:discover --ansi",
+        "build": [
+            "@php ./vendor/bin/testbench package:create-sqlite-db",
+            "@php ./vendor/bin/testbench migrate:fresh --seed"
+        ],
+        "serve": [
+            "@composer run build",
+            "@php ./vendor/bin/testbench serve"
+        ],
+        "test": "@php ./vendor/bin/pest",
+        "analyse": "@php ./vendor/bin/phpstan analyse"
+    }
 }
