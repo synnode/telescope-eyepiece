@@ -1,0 +1,25 @@
+{
+    "name": "michael/telescope-eyepiece",
+    "description": "A reskin/redesign companion package for Laravel Telescope. Replaces the dashboard UI without modifying the original package.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0|^11.0|^12.0|^13.0",
+        "laravel/telescope": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eyepiece\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eyepiece\\EyepieceServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
