@@ -59,6 +59,15 @@ export function hasActiveFilters(f: RequestFilters): boolean {
   )
 }
 
+export function countActiveFilters(f: RequestFilters): number {
+  let n = 0
+  if (f.search.length > 0) n++
+  if (f.verbs.length > 0) n++
+  if (f.statuses.length > 0) n++
+  if (f.minDuration > 0) n++
+  return n
+}
+
 export function viewMatches(view: SavedView, f: RequestFilters): boolean {
   return (
     view.filters.search === f.search &&

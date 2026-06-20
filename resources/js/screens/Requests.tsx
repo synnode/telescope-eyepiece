@@ -22,10 +22,12 @@ import {
   PRESET_VIEWS,
   STATUS_CLASSES,
   applyFiltersToParams,
+  countActiveFilters,
   readFiltersFromUrl,
   type RequestFilters,
   type StatusClass,
 } from './requests/filters'
+import { ChevronDown, SlidersHorizontal } from 'lucide-react'
 
 type RequestRow = EntryRow<RequestEntryContent>
 
@@ -71,8 +73,10 @@ export function RequestsScreen() {
     PRESET_VIEWS,
   )
   const [isNamingView, setIsNamingView] = useState(false)
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false)
 
   const handleCreateView = useCallback(() => setIsNamingView(true), [])
+  const activeFilterCount = countActiveFilters(filters)
 
   const {
     visibleColumns,
@@ -140,6 +144,25 @@ export function RequestsScreen() {
         <StatCards durations={durations} errorCount={errorCount} />
       </div>
 
+      <button
+        type="button"
+        className={'filter-toggle' + (isMobileFiltersOpen ? ' is-open' : '')}
+        aria-expanded={isMobileFiltersOpen}
+        onClick={() => setIsMobileFiltersOpen((o) => !o)}
+      >
+        <SlidersHorizontal size={14} />
+        <span className="filter-toggle__label">Filters</span>
+        {activeFilterCount > 0 && (
+          <span className="filter-toggle__badge">{activeFilterCount}</span>
+        )}
+        <ChevronDown size={14} className="filter-toggle__chevron" />
+      </button>
+
+      <div
+        className={
+          'filter-collapsible' + (isMobileFiltersOpen ? ' is-open' : '')
+        }
+      >
       <FilterForm value={filters} onChange={setFilters} statusCounts={statusCounts} />
       <SavedViewsRow
         value={filters}
@@ -156,6 +179,7 @@ export function RequestsScreen() {
           />
         }
       />
+      </div>
 
       <SqlCountsContext.Provider value={sqlCounts}>
         <EntryTable

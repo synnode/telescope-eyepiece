@@ -727,6 +727,55 @@ input {
   pointer-events: none;
 }
 
+/* ─── Mobile filter toggle ──────────────────────────────────────────────── */
+
+.filter-toggle { display: none; }
+
+@media (max-width: 768px) {
+  .filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 8px var(--gutter) 0;
+    padding: 8px 12px;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary-2);
+    font-size: 12px;
+    font-weight: 600;
+    align-self: flex-start;
+  }
+
+  .filter-toggle__label { flex: 1; text-align: left; }
+
+  .filter-toggle__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--accent-badge-bg);
+    color: var(--accent-deep);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .filter-toggle__chevron {
+    color: var(--text-faint);
+    transition: transform 0.16s ease;
+  }
+
+  .filter-toggle.is-open .filter-toggle__chevron {
+    transform: rotate(180deg);
+  }
+
+  .filter-collapsible { display: none; }
+  .filter-collapsible.is-open { display: contents; }
+}
+
 .column-chooser__foot {
   display: flex;
   justify-content: flex-end;
