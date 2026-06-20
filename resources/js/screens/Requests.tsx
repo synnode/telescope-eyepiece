@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
 import { api, type EntryRow, type RequestEntryContent } from '../lib/api'
 import { useEntryList } from '../lib/useEntryList'
+import { useSavedViews } from '../lib/savedViews'
 import { formatDuration, formatMemoryMB, formatRelative, statusClass } from '../lib/format'
 import { EntryTable, type EntryColumn } from '../components/EntryTable'
 import { VerbBadge } from '../components/VerbBadge'
@@ -15,6 +16,7 @@ import { FilterForm } from './requests/FilterForm'
 import { SavedViewsRow } from './requests/SavedViewsRow'
 import { RequestDetailBody } from './requests/RequestDetailBody'
 import {
+  PRESET_VIEWS,
   STATUS_CLASSES,
   applyFiltersToParams,
   readFiltersFromUrl,
@@ -55,6 +57,17 @@ export function RequestsScreen() {
     setParams(next, { replace: false })
   }, [params, setParams])
 
+  const { views, createView, removeView } = useSavedViews<RequestFilters>(
+    'eyepiece-views-requests',
+    PRESET_VIEWS,
+  )
+
+  const handleCreateView = useCallback(() => {
+    const name = window.prompt('Name this view')?.trim()
+    if (!name) return
+    createView(filters, name)
+  }, [createView, filters])
+
   const list = useEntryList<RequestEntryContent>({
     queryKey: ['requests', 'list'],
     fetcher: api.requests.list,
@@ -87,7 +100,13 @@ export function RequestsScreen() {
       </div>
 
       <FilterForm value={filters} onChange={setFilters} statusCounts={statusCounts} />
-      <SavedViewsRow value={filters} onApply={setFilters} />
+      <SavedViewsRow
+        value={filters}
+        onApply={setFilters}
+        views={views}
+        onCreate={handleCreateView}
+        onRemove={removeView}
+      />
 
       <EntryTable
         columns={requestColumns}

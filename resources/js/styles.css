@@ -592,6 +592,28 @@ input {
   color: var(--text-faint);
 }
 
+.view-pill-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.view-pill__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: var(--text-faint);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.view-pill__remove:hover {
+  background: var(--status-5xx-bg);
+  color: var(--threshold-error);
+}
+
 /* ─── Entry table ───────────────────────────────────────────────────────── */
 
 .entry-table-card {

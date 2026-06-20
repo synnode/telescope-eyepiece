@@ -25,27 +25,28 @@ export const DURATION_PRESETS: Array<{ label: string; value: number }> = [
   { label: '≥1s', value: 1000 },
 ]
 
-export type SavedView = {
-  id: string
-  label: string
-  filters: RequestFilters
-}
+import type { SavedView as GenericSavedView } from '../../lib/savedViews'
+
+export type SavedView = GenericSavedView<RequestFilters>
 
 export const PRESET_VIEWS: SavedView[] = [
   {
     id: 'slow',
     label: 'Slow (≥500ms)',
     filters: { ...EMPTY_FILTERS, minDuration: 500 },
+    builtIn: true,
   },
   {
     id: 'errors',
     label: 'Errors only',
     filters: { ...EMPTY_FILTERS, statuses: ['4xx', '5xx'] },
+    builtIn: true,
   },
   {
     id: 'writes',
     label: 'Writes',
     filters: { ...EMPTY_FILTERS, verbs: ['POST', 'PUT', 'PATCH'] },
+    builtIn: true,
   },
 ]
 

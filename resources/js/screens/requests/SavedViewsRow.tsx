@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import {
   PRESET_VIEWS,
   viewMatches,
@@ -11,6 +11,7 @@ type Props = {
   onApply: (next: RequestFilters) => void
   views?: SavedView[]
   onCreate?: () => void
+  onRemove?: (id: string) => void
 }
 
 export function SavedViewsRow({
@@ -18,22 +19,39 @@ export function SavedViewsRow({
   onApply,
   views = PRESET_VIEWS,
   onCreate,
+  onRemove,
 }: Props) {
   return (
     <div className="views-row" role="toolbar" aria-label="Saved views">
       <span className="views-row__label">Views</span>
       {views.map((view) => {
         const active = viewMatches(view, value)
+        const removable = !view.builtIn && onRemove
         return (
-          <button
+          <span
             key={view.id}
-            type="button"
-            className={'view-pill' + (active ? ' is-active' : '')}
-            aria-pressed={active}
-            onClick={() => onApply(view.filters)}
+            className={'view-pill-wrap' + (removable ? ' has-remove' : '')}
           >
-            {view.label}
-          </button>
+            <button
+              type="button"
+              className={'view-pill' + (active ? ' is-active' : '')}
+              aria-pressed={active}
+              onClick={() => onApply(view.filters)}
+            >
+              {view.label}
+            </button>
+            {removable && (
+              <button
+                type="button"
+                className="view-pill__remove"
+                aria-label={`Delete saved view "${view.label}"`}
+                title="Delete saved view"
+                onClick={() => onRemove(view.id)}
+              >
+                <X size={10} />
+              </button>
+            )}
+          </span>
         )
       })}
       {onCreate && (
