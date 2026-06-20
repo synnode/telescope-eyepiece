@@ -170,15 +170,16 @@ export function RequestsScreen() {
         views={views}
         onCreate={handleCreateView}
         onRemove={removeView}
-        trailing={
-          <ColumnChooser
-            columns={REQUEST_COLUMNS}
-            visibleKeys={visibleKeys}
-            onToggle={toggleColumn}
-            onReset={resetColumns}
-          />
-        }
       />
+      </div>
+
+      <div className="table-tools">
+        <ColumnChooser
+          columns={REQUEST_COLUMNS}
+          visibleKeys={visibleKeys}
+          onToggle={toggleColumn}
+          onReset={resetColumns}
+        />
       </div>
 
       <SqlCountsContext.Provider value={sqlCounts}>
