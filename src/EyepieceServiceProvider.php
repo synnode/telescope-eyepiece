@@ -60,7 +60,7 @@ class EyepieceServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/eyepiece'),
+            __DIR__.'/../public' => public_path('eyepiece'),
         ], 'eyepiece-assets');
     }
 }

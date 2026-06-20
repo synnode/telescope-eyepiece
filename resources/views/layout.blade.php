@@ -14,7 +14,7 @@
 
     @php
         $scriptVars = \Laravel\Telescope\Telescope::scriptVariables();
-        $manifestPath = public_path('vendor/eyepiece/.vite/manifest.json');
+        $manifestPath = public_path('eyepiece/.vite/manifest.json');
         $manifest = file_exists($manifestPath)
             ? json_decode(file_get_contents($manifestPath), true)
             : null;
@@ -36,8 +36,8 @@
     </script>
 
     @if ($entry)
-        <link rel="stylesheet" href="{{ asset('vendor/eyepiece/'.$entry['css'][0]) }}">
-        <script type="module" src="{{ asset('vendor/eyepiece/'.$entry['file']) }}"></script>
+        <link rel="stylesheet" href="{{ asset('eyepiece/'.$entry['css'][0]) }}">
+        <script type="module" src="{{ asset('eyepiece/'.$entry['file']) }}"></script>
     @else
         {{-- Dev: run `npm run dev` and load Vite directly. --}}
         {{-- React Fast Refresh preamble must run before any TSX module. --}}

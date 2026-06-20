@@ -32,7 +32,7 @@ npm run dev      # Vite dev server on :5175, blade falls back to it when no mani
 npm run build    # production build into public/ (manifest.json + assets/)
 ```
 
-The blade layout auto-detects: if `public/.vite/manifest.json` exists in the host app's `public/vendor/eyepiece/` (post-`vendor:publish`), it serves built assets; otherwise it loads from `http://localhost:5175`.
+The blade layout auto-detects: if `public/.vite/manifest.json` exists in the host app's `public/eyepiece/` (post-`vendor:publish`), it serves built assets; otherwise it loads from `http://localhost:5175`.
 
 For development against a real host app, add a path repo to the host's `composer.json`:
 

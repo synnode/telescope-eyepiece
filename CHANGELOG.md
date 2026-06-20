@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.1.0 — 2026-06-20
+
+### Changed
+
+- **Breaking:** assets now publish to `public/eyepiece/` instead of `public/vendor/eyepiece/`. Many host apps reverse-proxy or redirect `/vendor/*` URLs for security (composer's `vendor/` should never be public), which broke asset loading after install. Existing installs must re-publish and remove the old directory:
+
+  ```bash
+  php artisan vendor:publish --tag=eyepiece-assets --force
+  rm -rf public/vendor/eyepiece
+  ```
+
 ## v1.0.0 — 2026-06-20
 
 First public release.
