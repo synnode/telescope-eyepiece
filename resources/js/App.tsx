@@ -45,6 +45,14 @@ function Shell() {
   })
   const recordingStatus = statusQuery.data?.status ?? 'enabled'
 
+  const countsQuery = useQuery({
+    queryKey: ['eyepiece-counts'],
+    queryFn: api.eyepiece.counts,
+    refetchInterval: 5000,
+    staleTime: 4000,
+  })
+  const counts = countsQuery.data?.counts
+
   return (
     <div className="app">
       <Header
@@ -64,7 +72,7 @@ function Shell() {
         onThemeToggle={toggleTheme}
       />
       <div className="app-body">
-        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} counts={counts} />
         <main className="main">
           <RecordingBanner status={recordingStatus} />
           <Outlet context={{ isPolling } satisfies ShellContext} />

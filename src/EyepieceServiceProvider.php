@@ -2,6 +2,8 @@
 
 namespace Eyepiece;
 
+use Eyepiece\Http\Controllers\CountsController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -10,6 +12,7 @@ class EyepieceServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViews();
+        $this->loadRoutes();
         $this->registerPublishing();
     }
 
@@ -24,6 +27,23 @@ class EyepieceServiceProvider extends ServiceProvider
         $this->loadViewsFrom($path, 'telescope');
 
         View::prependNamespace('telescope', $path);
+    }
+
+    /**
+     * Register Eyepiece's own JSON endpoints under the same path prefix and
+     * middleware group as Telescope's API, so they inherit the same auth
+     * gate and CSRF handling without any extra config.
+     */
+    protected function loadRoutes(): void
+    {
+        Route::group([
+            'domain' => config('telescope.domain', null),
+            'prefix' => config('telescope.path', 'telescope').'/eyepiece-api',
+            'middleware' => 'telescope',
+        ], function () {
+            Route::get('/counts', [CountsController::class, 'index']);
+            Route::post('/batch-query-counts', [CountsController::class, 'batchQueryCounts']);
+        });
     }
 
     protected function registerPublishing(): void

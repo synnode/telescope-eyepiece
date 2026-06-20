@@ -25,6 +25,13 @@ export function formatRelative(iso: string, nowMs = Date.now()): string {
   return `${Math.round(diff / 86_400)}d ago`
 }
 
+export function formatCount(n: number): string {
+  if (n < 1000) return String(n)
+  if (n < 100_000) return `${(n / 1000).toFixed(n < 10_000 ? 1 : 0).replace(/\.0$/, '')}k`
+  if (n < 1_000_000) return `${Math.round(n / 1000)}k`
+  return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+}
+
 export function percentile(sortedAsc: number[], p: number): number {
   if (sortedAsc.length === 0) return 0
   const idx = Math.max(0, Math.ceil(p * sortedAsc.length) - 1)

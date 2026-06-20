@@ -20,12 +20,13 @@ import {
   Zap,
   type LucideIcon,
 } from 'lucide-react'
+import { formatCount } from '../lib/format'
 
 type NavItem = {
   to: string
   label: string
   Icon: LucideIcon
-  count?: number | string
+  countKey?: string
   danger?: boolean
 }
 
@@ -38,34 +39,34 @@ const SECTIONS: NavSection[] = [
   {
     title: 'Watchers',
     items: [
-      { to: '/requests', label: 'Requests', Icon: Activity },
-      { to: '/commands', label: 'Commands', Icon: Terminal },
-      { to: '/schedule', label: 'Schedule', Icon: Calendar },
-      { to: '/jobs', label: 'Jobs', Icon: Briefcase },
-      { to: '/batches', label: 'Batches', Icon: Layers },
+      { to: '/requests', label: 'Requests', Icon: Activity, countKey: 'request' },
+      { to: '/commands', label: 'Commands', Icon: Terminal, countKey: 'command' },
+      { to: '/schedule', label: 'Schedule', Icon: Calendar, countKey: 'schedule' },
+      { to: '/jobs', label: 'Jobs', Icon: Briefcase, countKey: 'job' },
+      { to: '/batches', label: 'Batches', Icon: Layers, countKey: 'batch' },
     ],
   },
   {
     title: 'Data',
     items: [
-      { to: '/queries', label: 'Queries', Icon: Database },
-      { to: '/models', label: 'Models', Icon: Code },
-      { to: '/cache', label: 'Cache', Icon: Zap },
-      { to: '/redis', label: 'Redis', Icon: Server },
-      { to: '/logs', label: 'Logs', Icon: FileText },
+      { to: '/queries', label: 'Queries', Icon: Database, countKey: 'query' },
+      { to: '/models', label: 'Models', Icon: Code, countKey: 'model' },
+      { to: '/cache', label: 'Cache', Icon: Zap, countKey: 'cache' },
+      { to: '/redis', label: 'Redis', Icon: Server, countKey: 'redis' },
+      { to: '/logs', label: 'Logs', Icon: FileText, countKey: 'log' },
     ],
   },
   {
     title: 'Diagnostics',
     items: [
-      { to: '/exceptions', label: 'Exceptions', Icon: TriangleAlert, danger: true },
-      { to: '/dumps', label: 'Dumps', Icon: Inbox },
-      { to: '/client-requests', label: 'HTTP Client', Icon: Globe },
-      { to: '/mail', label: 'Mail', Icon: Mail },
-      { to: '/notifications', label: 'Notifications', Icon: Bell },
-      { to: '/gates', label: 'Gates', Icon: Shield },
-      { to: '/events', label: 'Events', Icon: Activity },
-      { to: '/views', label: 'Views', Icon: Eye },
+      { to: '/exceptions', label: 'Exceptions', Icon: TriangleAlert, danger: true, countKey: 'exception' },
+      { to: '/dumps', label: 'Dumps', Icon: Inbox, countKey: 'dump' },
+      { to: '/client-requests', label: 'HTTP Client', Icon: Globe, countKey: 'client_request' },
+      { to: '/mail', label: 'Mail', Icon: Mail, countKey: 'mail' },
+      { to: '/notifications', label: 'Notifications', Icon: Bell, countKey: 'notification' },
+      { to: '/gates', label: 'Gates', Icon: Shield, countKey: 'gate' },
+      { to: '/events', label: 'Events', Icon: Activity, countKey: 'event' },
+      { to: '/views', label: 'Views', Icon: Eye, countKey: 'view' },
     ],
   },
   {
@@ -79,9 +80,10 @@ const SECTIONS: NavSection[] = [
 type Props = {
   isOpen: boolean
   onClose: () => void
+  counts?: Record<string, number>
 }
 
-export function Sidebar({ isOpen, onClose }: Props) {
+export function Sidebar({ isOpen, onClose, counts }: Props) {
   return (
     <>
       {isOpen && (
@@ -96,26 +98,31 @@ export function Sidebar({ isOpen, onClose }: Props) {
           <div key={section.title} className="sidebar__section">
             <div className="sidebar__section-label">{section.title}</div>
             <nav className="sidebar__nav">
-              {section.items.map(({ to, label, Icon, count, danger }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  onClick={onClose}
-                  className={({ isActive }) =>
-                    [
-                      'sidebar__item',
-                      isActive ? 'is-active' : '',
-                      danger ? 'is-danger' : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')
-                  }
-                >
-                  <Icon size={15} strokeWidth={2} className="sidebar__icon" />
-                  <span className="sidebar__label">{label}</span>
-                  {count !== undefined && <span className="sidebar__count">{count}</span>}
-                </NavLink>
-              ))}
+              {section.items.map(({ to, label, Icon, countKey, danger }) => {
+                const count = countKey ? counts?.[countKey] : undefined
+                return (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      [
+                        'sidebar__item',
+                        isActive ? 'is-active' : '',
+                        danger ? 'is-danger' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')
+                    }
+                  >
+                    <Icon size={15} strokeWidth={2} className="sidebar__icon" />
+                    <span className="sidebar__label">{label}</span>
+                    {count !== undefined && count > 0 && (
+                      <span className="sidebar__count">{formatCount(count)}</span>
+                    )}
+                  </NavLink>
+                )
+              })}
             </nav>
           </div>
         ))}

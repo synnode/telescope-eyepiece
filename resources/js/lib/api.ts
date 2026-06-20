@@ -5,6 +5,11 @@ function apiUrl(endpoint: string): string {
   return `${base}/telescope-api/${endpoint}`
 }
 
+function eyepieceUrl(endpoint: string): string {
+  const base = getTelescopePath().replace(/\/$/, '')
+  return `${base}/eyepiece-api/${endpoint}`
+}
+
 export type EntryStatus = 'enabled' | 'disabled' | 'paused' | 'off' | 'wrong-cache'
 
 export type EntryListResponse<T = unknown> = {
@@ -378,6 +383,30 @@ export const api = {
         body: JSON.stringify({ tag }),
       })
       if (!res.ok) throw new Error('Failed to remove monitored tag')
+    },
+  },
+  eyepiece: {
+    counts: async () => {
+      const res = await fetch(eyepieceUrl('counts'), {
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin',
+      })
+      if (!res.ok) throw new Error('Failed to fetch counts')
+      return res.json() as Promise<{ counts: Record<string, number> }>
+    },
+    batchQueryCounts: async (batchIds: string[]) => {
+      const res = await fetch(eyepieceUrl('batch-query-counts'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': getCsrfToken(),
+          Accept: 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ batch_ids: batchIds }),
+      })
+      if (!res.ok) throw new Error('Failed to fetch batch query counts')
+      return res.json() as Promise<{ counts: Record<string, number> }>
     },
   },
   exceptions: {

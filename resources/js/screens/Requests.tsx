@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { useOutletContext, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
@@ -33,6 +33,8 @@ type RequestColumnDef = ColumnDef & {
   render: (row: RequestRow) => ReactNode
   align?: 'left' | 'right'
 }
+
+const SqlCountsContext = createContext<Record<string, number>>({})
 
 export function RequestsScreen() {
   const { isPolling } = useOutletContext<ShellContext>()
@@ -97,6 +99,22 @@ export function RequestsScreen() {
     isPolling: isPolling && !selectedId,
   })
 
+  const batchIds = useMemo(() => {
+    const ids = new Set<string>()
+    for (const row of list.rows) {
+      if (row.batch_id) ids.add(row.batch_id)
+    }
+    return Array.from(ids)
+  }, [list.rows])
+
+  const sqlCountsQuery = useQuery({
+    queryKey: ['requests', 'sql-counts', batchIds.join(',')],
+    queryFn: () => api.eyepiece.batchQueryCounts(batchIds),
+    enabled: batchIds.length > 0,
+    staleTime: 1500,
+  })
+  const sqlCounts = sqlCountsQuery.data?.counts ?? {}
+
   const entries = list.rows
   const filtered = useMemo(() => applyFilters(entries, filters), [entries, filters])
 
@@ -139,23 +157,25 @@ export function RequestsScreen() {
         }
       />
 
-      <EntryTable
-        columns={columns}
-        rows={filtered}
-        gridTemplateColumns={gridTemplate('26px')}
-        getRowKey={(e) => e.id}
-        selectedKey={selectedId}
-        onRowClick={(e) => openDetail(e.id)}
-        isLoading={list.isLoading}
-        hasMore={list.hasMore}
-        isLoadingMore={list.isLoadingMore}
-        onLoadMore={list.loadMore}
-        emptyMessage={
-          entries.length === 0
-            ? 'No requests recorded yet.'
-            : 'No requests match these filters.'
-        }
-      />
+      <SqlCountsContext.Provider value={sqlCounts}>
+        <EntryTable
+          columns={columns}
+          rows={filtered}
+          gridTemplateColumns={gridTemplate('26px')}
+          getRowKey={(e) => e.id}
+          selectedKey={selectedId}
+          onRowClick={(e) => openDetail(e.id)}
+          isLoading={list.isLoading}
+          hasMore={list.hasMore}
+          isLoadingMore={list.isLoadingMore}
+          onLoadMore={list.loadMore}
+          emptyMessage={
+            entries.length === 0
+              ? 'No requests recorded yet.'
+              : 'No requests match these filters.'
+          }
+        />
+      </SqlCountsContext.Provider>
 
       {selectedId && (
         <RequestDetail id={selectedId} onClose={closeDetail} />
@@ -253,6 +273,17 @@ function countByStatus(
   return counts
 }
 
+function SqlCountCell({ batchId }: { batchId: string | null }) {
+  const counts = useContext(SqlCountsContext)
+  if (!batchId) return <span className="cell-sql">—</span>
+  const count = counts[batchId]
+  if (count === undefined) return <span className="cell-sql">—</span>
+  if (count === 0) return <span className="cell-sql">0</span>
+  return (
+    <span className={'cell-sql' + (count >= 50 ? ' is-slow' : '')}>{count}</span>
+  )
+}
+
 function toMs(v: number | string | null | undefined): number {
   if (v == null) return 0
   return typeof v === 'number' ? v : Number(v) || 0
@@ -304,7 +335,7 @@ const REQUEST_COLUMNS: RequestColumnDef[] = [
     label: 'SQL',
     width: '56px',
     align: 'right',
-    render: () => <span className="cell-sql">—</span>,
+    render: (e) => <SqlCountCell batchId={e.batch_id} />,
   },
   {
     key: 'memory',
