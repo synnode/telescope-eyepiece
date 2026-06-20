@@ -5,6 +5,7 @@ import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
 import { RecordingBanner } from './components/RecordingBanner'
 import { useTheme } from './lib/theme'
+import { getAppName } from './lib/telescope'
 import { RequestsScreen } from './screens/Requests'
 import { QueriesScreen } from './screens/Queries'
 import { ExceptionsScreen } from './screens/Exceptions'
@@ -56,6 +57,7 @@ function Shell() {
   return (
     <div className="app">
       <Header
+        appName={getAppName()}
         recordingStatus={recordingStatus}
         isPolling={isPolling}
         onRecordingToggle={async () => {

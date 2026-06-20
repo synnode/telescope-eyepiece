@@ -7,14 +7,23 @@ export type TelescopeScriptVariables = {
   recording: boolean
 }
 
+export type EyepieceScriptVariables = {
+  appName: string | null
+}
+
 declare global {
   interface Window {
     Telescope: TelescopeScriptVariables
+    Eyepiece?: EyepieceScriptVariables
   }
 }
 
 export function getTelescopePath(): string {
   return '/' + (window.Telescope?.path ?? 'telescope').replace(/^\/+|\/+$/g, '')
+}
+
+export function getAppName(): string | undefined {
+  return window.Eyepiece?.appName ?? undefined
 }
 
 export function getCsrfToken(): string {

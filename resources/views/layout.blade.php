@@ -23,6 +23,7 @@
 
     <script>
         window.Telescope = @json($scriptVars);
+        window.Eyepiece = { appName: @json(config('app.name')) };
         (function () {
             try {
                 var stored = localStorage.getItem('eyepiece-theme');
