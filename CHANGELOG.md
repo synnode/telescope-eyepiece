@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.0 — 2026-06-20
+
+### Added
+
+- Request detail drawer now shows the request payload (POST body) as pretty-printed JSON, and the response body below the SQL queries. Both sections auto-hide on GET requests or when Telescope didn't capture content.
+
 ## v1.1.1 — 2026-06-20
 
 ### Fixed
