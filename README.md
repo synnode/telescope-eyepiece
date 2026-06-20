@@ -12,7 +12,7 @@ A reskin/redesign companion package for [Laravel Telescope](https://github.com/l
 ## Install
 
 ```bash
-composer require michael/telescope-eyepiece
+composer require synnode/telescope-eyepiece
 php artisan vendor:publish --tag=eyepiece-assets
 ```
 
@@ -41,7 +41,7 @@ For development against a real host app, add a path repo to the host's `composer
     { "type": "path", "url": "/abs/path/to/telescope-eyepiece", "options": { "symlink": true } }
 ],
 "require": {
-    "michael/telescope-eyepiece": "@dev"
+    "synnode/telescope-eyepiece": "@dev"
 }
 ```
 

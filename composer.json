@@ -1,5 +1,5 @@
 {
-    "name": "michael/telescope-eyepiece",
+    "name": "synnode/telescope-eyepiece",
     "description": "A reskin/redesign companion package for Laravel Telescope. Replaces the dashboard UI with a React SPA without modifying or forking the upstream package.",
     "type": "library",
     "license": "MIT",
