@@ -4,42 +4,63 @@ A reskin/redesign companion package for [Laravel Telescope](https://github.com/l
 
 ## How it works
 
-- Telescope's `HomeController` returns `view('telescope::layout')`. The Eyepiece service provider prepends its own path on the `telescope` view namespace, so `resources/views/layout.blade.php` in this package wins lookup.
-- Eyepiece's layout loads a small React SPA (Vite-built) instead of Telescope's bundled Vue assets.
-- The React app consumes the existing `/telescope-api/*` JSON endpoints — nothing about Telescope's recording, storage, watchers, or auth changes.
+- Telescope's `HomeController` returns `view('telescope::layout')`. The Eyepiece service provider prepends its own path on the `telescope` view namespace, so this package's `resources/views/layout.blade.php` wins lookup.
+- The Eyepiece layout loads a pre-built React SPA (Vite) instead of Telescope's bundled Vue assets.
+- The React app consumes the existing `/telescope-api/*` JSON endpoints — recording, watchers, storage, and the `Gate::viewTelescope` authorization gate all keep working untouched.
+- A small `eyepiece-api/*` sidecar (two endpoints) adds entry counts for the sidebar and per-batch SQL counts for the Requests table.
 
-## Install (host app)
+## Install
 
 ```bash
 composer require michael/telescope-eyepiece
 php artisan vendor:publish --tag=eyepiece-assets
 ```
 
-Visit `/telescope` (or your configured Telescope path) — it now serves the Eyepiece UI.
+Visit `/telescope` (or whatever path you set in `config/telescope.php`) — it now serves the Eyepiece UI.
+
+The package auto-discovers, no provider registration needed. Authorization keeps using your existing `Gate::define('viewTelescope', …)` from `TelescopeServiceProvider`.
+
+### Upgrading
+
+Re-run `vendor:publish --tag=eyepiece-assets --force` after any version bump so the published assets and Vite manifest stay in sync with the installed package.
 
 ## Develop
 
 ```bash
 npm install
-npm run dev      # Vite dev server on :5173, blade falls back to it when no manifest exists
+npm run dev      # Vite dev server on :5175, blade falls back to it when no manifest exists
 npm run build    # production build into public/ (manifest.json + assets/)
 ```
 
-The blade layout auto-detects: if `public/.vite/manifest.json` exists it serves built assets; otherwise it loads from `http://localhost:5173`.
+The blade layout auto-detects: if `public/.vite/manifest.json` exists in the host app's `public/vendor/eyepiece/` (post-`vendor:publish`), it serves built assets; otherwise it loads from `http://localhost:5175`.
 
-## Layout
+For development against a real host app, add a path repo to the host's `composer.json`:
 
-```
-src/EyepieceServiceProvider.php    PHP entry: view override + asset publish
-resources/views/layout.blade.php   The single blade view that hosts the SPA
-resources/js/app.tsx               React entry
-resources/js/App.tsx               Router + chrome
-resources/js/lib/api.ts            Typed wrapper around /telescope-api/*
-resources/js/lib/telescope.ts      window.Telescope script vars + CSRF
-resources/js/screens/*.tsx         One screen per Telescope entry type
-public/                            Built assets (gitignored)
+```json
+"repositories": [
+    { "type": "path", "url": "/abs/path/to/telescope-eyepiece", "options": { "symlink": true } }
+],
+"require": {
+    "michael/telescope-eyepiece": "@dev"
+}
 ```
 
-## Status
+Then run `npm run dev` from this package and load the host app normally — the symlinked source is picked up live, and Vite HMR works through the blade fallback.
 
-Skeleton only. One working screen (Requests) — the rest are placeholders to be filled in as the design is built out.
+## Tests + lint
+
+```bash
+composer run test       # Pest, view-override regression
+composer run analyse    # PHPStan level 4 on src/
+npm run lint            # ESLint flat config across resources/js
+```
+
+## Requirements
+
+- PHP 8.1+
+- Laravel 10 / 11 / 12 / 13
+- `laravel/telescope ^5.0`
+
+## License
+
+MIT — see `LICENSE`.

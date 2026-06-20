@@ -1,8 +1,23 @@
 {
     "name": "michael/telescope-eyepiece",
-    "description": "A reskin/redesign companion package for Laravel Telescope. Replaces the dashboard UI without modifying the original package.",
+    "description": "A reskin/redesign companion package for Laravel Telescope. Replaces the dashboard UI with a React SPA without modifying or forking the upstream package.",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "laravel",
+        "telescope",
+        "monitoring",
+        "debugging",
+        "dashboard",
+        "react",
+        "ui"
+    ],
+    "authors": [
+        {
+            "name": "Michael S.",
+            "email": "sandersm689@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "laravel/framework": "^10.0|^11.0|^12.0|^13.0",

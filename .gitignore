@@ -1,7 +1,4 @@
 node_modules/
-public/assets/
-public/.vite/
-public/manifest.json
 vendor/
 composer.lock
 .DS_Store
