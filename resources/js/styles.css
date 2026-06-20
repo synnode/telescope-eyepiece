@@ -211,11 +211,26 @@ input {
   border-radius: 50%;
   background: var(--live-dot);
   box-shadow: 0 0 0 3px var(--live-dot-ring);
+  animation: live-pulse 1.8s ease-in-out infinite;
 }
 
 .live-dot.is-paused {
   background: var(--text-faint);
   box-shadow: 0 0 0 3px var(--border);
+  animation: none;
+}
+
+@keyframes live-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px var(--live-dot-ring);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--live-dot-ring);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
 }
 
 .icon-btn {
