@@ -23,7 +23,10 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter basename={getTelescopePath()}>
+      <BrowserRouter
+        basename={getTelescopePath()}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <App />
       </BrowserRouter>
     </QueryClientProvider>
