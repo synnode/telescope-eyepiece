@@ -5,9 +5,18 @@ namespace Eyepiece\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Laravel\Telescope\Telescope;
 
 class CountsController extends Controller
 {
+    public function __construct()
+    {
+        // Telescope would otherwise record every call to these endpoints as
+        // a request entry plus N query entries against telescope_entries,
+        // which feedback-loops the polling counts upwards forever.
+        Telescope::stopRecording();
+    }
+
     public function index()
     {
         $counts = $this->connection()
