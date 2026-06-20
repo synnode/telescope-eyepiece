@@ -1985,6 +1985,142 @@ input {
   background: #fff;
 }
 
+/* ─── Modal ─────────────────────────────────────────────────────────────── */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 24, 27, 0.4);
+  z-index: 60;
+  animation: drawer-fade-in 0.12s ease forwards;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  max-width: 92vw;
+  transform: translate(-50%, -50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: 0 24px 60px rgba(24, 24, 27, 0.25);
+  z-index: 70;
+  animation: modal-pop 0.16s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.modal__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal__close {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r-button);
+  background: var(--app-bg);
+  color: var(--text-secondary-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal__close:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .modal__close {
+  background: var(--surface-subtle);
+}
+
+[data-theme="dark"] .modal__close:hover {
+  background: var(--border);
+}
+
+.modal__body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.modal__input {
+  width: 100%;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--r-input);
+  background: var(--surface-subtle);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.modal__input::placeholder {
+  color: var(--text-faint);
+}
+
+.modal__input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.modal__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--border-faint);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--r-button);
+  background: transparent;
+  color: var(--text-secondary-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--app-bg);
+  color: var(--text);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--surface-subtle);
+}
+
 /* ─── Recording banner ──────────────────────────────────────────────────── */
 
 .recording-banner {

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useOutletContext, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
@@ -11,6 +11,7 @@ import { VerbBadge } from '../components/VerbBadge'
 import { StatusBadge } from '../components/StatusBadge'
 import { Avatar } from '../components/Avatar'
 import { EntryDetailDrawer } from '../components/EntryDetailDrawer'
+import { PromptModal } from '../components/PromptModal'
 import { StatCards } from './requests/StatCards'
 import { FilterForm } from './requests/FilterForm'
 import { SavedViewsRow } from './requests/SavedViewsRow'
@@ -61,12 +62,9 @@ export function RequestsScreen() {
     'eyepiece-views-requests',
     PRESET_VIEWS,
   )
+  const [isNamingView, setIsNamingView] = useState(false)
 
-  const handleCreateView = useCallback(() => {
-    const name = window.prompt('Name this view')?.trim()
-    if (!name) return
-    createView(filters, name)
-  }, [createView, filters])
+  const handleCreateView = useCallback(() => setIsNamingView(true), [])
 
   const list = useEntryList<RequestEntryContent>({
     queryKey: ['requests', 'list'],
@@ -129,6 +127,18 @@ export function RequestsScreen() {
       {selectedId && (
         <RequestDetail id={selectedId} onClose={closeDetail} />
       )}
+
+      <PromptModal
+        isOpen={isNamingView}
+        title="Save view"
+        label="View name"
+        placeholder="e.g. Slow API endpoints"
+        onSubmit={(name) => {
+          createView(filters, name)
+          setIsNamingView(false)
+        }}
+        onCancel={() => setIsNamingView(false)}
+      />
     </>
   )
 }
