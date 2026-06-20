@@ -36,8 +36,12 @@
     </script>
 
     @if ($entry)
-        <link rel="stylesheet" href="{{ asset('eyepiece/'.$entry['css'][0]) }}">
-        <script type="module" src="{{ asset('eyepiece/'.$entry['file']) }}"></script>
+        {{-- Root-relative paths so the browser inherits the page's scheme+host+port.
+             asset() builds absolute URLs from APP_URL, which drops the port if the
+             host runs on a non-standard one — that mismatch sends asset requests
+             to the wrong vhost. --}}
+        <link rel="stylesheet" href="/eyepiece/{{ $entry['css'][0] }}">
+        <script type="module" src="/eyepiece/{{ $entry['file'] }}"></script>
     @else
         {{-- Dev: run `npm run dev` and load Vite directly. --}}
         {{-- React Fast Refresh preamble must run before any TSX module. --}}

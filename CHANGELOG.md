@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1 — 2026-06-20
+
+### Fixed
+
+- Blade now emits root-relative asset paths (`/eyepiece/...`) instead of going through `asset()`. `asset()` builds absolute URLs from `APP_URL` and silently drops the port when the host runs on a non-standard one (e.g. `:8006`), which sends asset requests to the wrong vhost.
+
 ## v1.1.0 — 2026-06-20
 
 ### Changed
