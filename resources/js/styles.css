@@ -1995,6 +1995,10 @@ input {
   animation: drawer-fade-in 0.12s ease forwards;
 }
 
+[data-theme="dark"] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.65);
+}
+
 .modal {
   position: fixed;
   top: 50%;
