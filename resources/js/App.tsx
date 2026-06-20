@@ -3,6 +3,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
+import { useTheme } from './lib/theme'
 import { RequestsScreen } from './screens/Requests'
 import { QueriesScreen } from './screens/Queries'
 import { ExceptionsScreen } from './screens/Exceptions'
@@ -32,6 +33,7 @@ export type ShellContext = {
 function Shell() {
   const [isPolling, setIsPolling] = useState(true)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
   const queryClient = useQueryClient()
 
   return (
@@ -45,6 +47,8 @@ function Shell() {
         }}
         onRefresh={() => queryClient.invalidateQueries()}
         onMenuToggle={() => setIsSidebarOpen((open) => !open)}
+        theme={theme}
+        onThemeToggle={toggleTheme}
       />
       <div className="app-body">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />

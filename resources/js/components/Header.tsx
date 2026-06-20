@@ -1,5 +1,6 @@
-import { Menu, Pause, Play, RefreshCw, Trash2 } from 'lucide-react'
+import { Menu, Moon, Pause, Play, RefreshCw, Sun, Trash2 } from 'lucide-react'
 import { Logo } from './Logo'
+import type { Theme } from '../lib/theme'
 
 type Props = {
   appName?: string
@@ -8,6 +9,8 @@ type Props = {
   onClear: () => void
   onRefresh: () => void
   onMenuToggle: () => void
+  theme: Theme
+  onThemeToggle: () => void
 }
 
 export function Header({
@@ -17,6 +20,8 @@ export function Header({
   onClear,
   onRefresh,
   onMenuToggle,
+  theme,
+  onThemeToggle,
 }: Props) {
   return (
     <header className="app-header">
@@ -61,6 +66,15 @@ export function Header({
           onClick={onClear}
         >
           <Trash2 size={15} />
+        </button>
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          onClick={onThemeToggle}
+        >
+          {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
         </button>
         <button
           type="button"

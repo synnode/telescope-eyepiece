@@ -1,6 +1,7 @@
 /* ─── Design tokens (from design_handoff_telescope_requests/README.md) ────── */
 
 :root {
+  color-scheme: light;
   /* Surfaces & text */
   --app-bg: #f4f4f5;
   --surface: #ffffff;
@@ -1799,4 +1800,150 @@ input {
   .filter-divider { display: none; }
 
   .drawer { width: 100%; }
+}
+
+/* ─── Dark theme ────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --app-bg: #0f0f12;
+  --surface: #18181b;
+  --surface-subtle: #1c1c22;
+  --border: #27272a;
+  --border-input: #303036;
+  --border-faint: #1f1f24;
+  --border-faintest: #18181b;
+  --text: #f4f4f5;
+  --text-strong: #fafafa;
+  --text-secondary: #d4d4d8;
+  --text-secondary-2: #a1a1aa;
+  --text-muted: #71717a;
+  --text-faint: #52525b;
+  --text-faintest: #3f3f46;
+  --text-faintest-2: #2e2e35;
+
+  --accent: #818cf8;
+  --accent-deep: #a5b4fc;
+  --accent-tint: rgba(99, 102, 241, 0.16);
+  --accent-badge-bg: rgba(99, 102, 241, 0.28);
+  --accent-view-border: rgba(99, 102, 241, 0.5);
+  --logo-from: #818cf8;
+  --logo-to: #a78bfa;
+  --chip-active-fill: #f4f4f5;
+
+  --verb-get-text: #d4d4d8;        --verb-get-bg: rgba(63, 63, 70, 0.6);
+  --verb-post-text: #93c5fd;       --verb-post-bg: rgba(59, 130, 246, 0.18);
+  --verb-put-text: #fbbf24;        --verb-put-bg: rgba(245, 158, 11, 0.18);
+  --verb-patch-text: #fbbf24;      --verb-patch-bg: rgba(245, 158, 11, 0.18);
+  --verb-delete-text: #fca5a5;     --verb-delete-bg: rgba(239, 68, 68, 0.18);
+
+  --status-2xx-text: #4ade80;      --status-2xx-bg: rgba(34, 197, 94, 0.15);
+  --status-2xx-dot: #22c55e;
+  --status-3xx-text: #a5b4fc;      --status-3xx-bg: rgba(99, 102, 241, 0.18);
+  --status-3xx-dot: #818cf8;
+  --status-4xx-text: #fbbf24;      --status-4xx-bg: rgba(245, 158, 11, 0.15);
+  --status-4xx-dot: #f59e0b;
+  --status-5xx-text: #fca5a5;      --status-5xx-bg: rgba(239, 68, 68, 0.15);
+  --status-5xx-dot: #ef4444;
+
+  --threshold-fast: #d4d4d8;
+  --threshold-slow: #fbbf24;
+  --threshold-slowest: #fca5a5;
+  --threshold-error: #fca5a5;
+  --threshold-ok: #4ade80;
+  --threshold-warn-amber: #f59e0b;
+
+  --live-dot-ring: rgba(34, 197, 94, 0.2);
+}
+
+/* Hardcoded backgrounds / borders that need a different value in dark */
+
+[data-theme="dark"] .icon-btn {
+  background: var(--surface-subtle);
+}
+[data-theme="dark"] .icon-btn:hover {
+  background: var(--border);
+}
+[data-theme="dark"] .icon-btn--primary,
+[data-theme="dark"] .icon-btn--primary:hover {
+  background: var(--accent);
+  color: #fff;
+}
+[data-theme="dark"] .icon-btn--primary:hover {
+  background: var(--accent-deep);
+}
+[data-theme="dark"] .live-pill {
+  background: var(--surface-subtle);
+}
+[data-theme="dark"] .sidebar__item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+[data-theme="dark"] .entry-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+[data-theme="dark"] .sidebar__item.is-danger {
+  color: #fca5a5;
+}
+[data-theme="dark"] .sidebar__item.is-danger .sidebar__count {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.2);
+}
+[data-theme="dark"] .chip.is-active {
+  color: #18181b;
+}
+[data-theme="dark"] .chip:hover:not(.is-active) {
+  border-color: var(--text-faint);
+}
+[data-theme="dark"] .filter-search input {
+  background: var(--surface-subtle);
+}
+[data-theme="dark"] .filter-search input:focus {
+  background: var(--surface);
+}
+[data-theme="dark"] .drawer__close {
+  background: var(--surface-subtle);
+}
+[data-theme="dark"] .drawer__close:hover {
+  background: var(--border);
+}
+[data-theme="dark"] .exc-message {
+  background: var(--status-5xx-bg);
+  border-color: transparent;
+}
+[data-theme="dark"] .exc-message.is-resolved {
+  background: var(--surface-subtle);
+  border-color: var(--border-faint);
+}
+[data-theme="dark"] .log-message--emergency,
+[data-theme="dark"] .log-message--alert,
+[data-theme="dark"] .log-message--critical,
+[data-theme="dark"] .log-message--error {
+  background: var(--status-5xx-bg);
+  border-color: transparent;
+}
+[data-theme="dark"] .log-message--warning {
+  background: var(--status-4xx-bg);
+  border-color: transparent;
+}
+[data-theme="dark"] .log-message--notice {
+  background: var(--accent-tint);
+  border-color: transparent;
+}
+[data-theme="dark"] .dumps-warning {
+  background: var(--status-4xx-bg);
+  border-color: transparent;
+}
+[data-theme="dark"] .view-pill:hover:not(.is-active) {
+  border-color: var(--text-faint);
+}
+[data-theme="dark"] .level-badge--debug {
+  background: var(--surface-subtle);
+  border-color: var(--border);
+}
+
+/* Mail iframe stays light so emails render as authors intended */
+[data-theme="dark"] .mail-preview {
+  background: #fff;
 }

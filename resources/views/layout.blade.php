@@ -23,6 +23,15 @@
 
     <script>
         window.Telescope = @json($scriptVars);
+        (function () {
+            try {
+                var stored = localStorage.getItem('eyepiece-theme');
+                var theme = (stored === 'light' || stored === 'dark')
+                    ? stored
+                    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.dataset.theme = theme;
+            } catch (e) {}
+        })();
     </script>
 
     @if ($entry)
