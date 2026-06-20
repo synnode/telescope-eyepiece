@@ -399,7 +399,19 @@ export const api = {
       return res.json() as Promise<EntryShowResponse<ExceptionEntryContent>>
     },
   },
-  toggleRecording: () => apiPost<void>('toggle-recording'),
+  toggleRecording: async () => {
+    const res = await fetch(apiUrl('toggle-recording'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': getCsrfToken(),
+        Accept: 'application/json',
+      },
+      credentials: 'same-origin',
+      body: '{}',
+    })
+    if (!res.ok) throw new Error('Failed to toggle recording')
+  },
   clearEntries: async () => {
     const res = await fetch(apiUrl('entries'), {
       method: 'DELETE',
