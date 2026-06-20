@@ -1947,3 +1947,24 @@ input {
 [data-theme="dark"] .mail-preview {
   background: #fff;
 }
+
+/* ─── Recording banner ──────────────────────────────────────────────────── */
+
+.recording-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px var(--gutter) 0;
+  padding: 9px 14px;
+  background: var(--status-5xx-bg);
+  border: 1px solid var(--status-5xx-bg);
+  border-left: 3px solid var(--threshold-error);
+  border-radius: var(--r-card-sm);
+  color: var(--status-5xx-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .recording-banner {
+  border-color: transparent;
+}

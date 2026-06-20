@@ -1,13 +1,15 @@
 import { Menu, Moon, Pause, Play, RefreshCw, Sun, Trash2 } from 'lucide-react'
 import { Logo } from './Logo'
+import type { EntryStatus } from '../lib/api'
 import type { Theme } from '../lib/theme'
 
 type Props = {
   appName?: string
+  recordingStatus: EntryStatus
   isPolling: boolean
-  onPauseToggle: () => void
+  onRecordingToggle: () => void
+  onPollingToggle: () => void
   onClear: () => void
-  onRefresh: () => void
   onMenuToggle: () => void
   theme: Theme
   onThemeToggle: () => void
@@ -15,14 +17,22 @@ type Props = {
 
 export function Header({
   appName,
+  recordingStatus,
   isPolling,
-  onPauseToggle,
+  onRecordingToggle,
+  onPollingToggle,
   onClear,
-  onRefresh,
   onMenuToggle,
   theme,
   onThemeToggle,
 }: Props) {
+  const isRecording = recordingStatus === 'enabled'
+  const pillLabel = recordingStatus === 'paused'
+    ? 'Paused'
+    : recordingStatus === 'disabled' || recordingStatus === 'off'
+      ? 'Off'
+      : 'Live'
+
   return (
     <header className="app-header">
       <div className="app-header__left">
@@ -46,17 +56,17 @@ export function Header({
 
       <div className="app-header__right">
         <span className="live-pill" aria-live="polite">
-          <span className={'live-dot' + (isPolling ? '' : ' is-paused')} />
-          {isPolling ? 'Live' : 'Paused'}
+          <span className={'live-dot' + (isRecording ? '' : ' is-paused')} />
+          {pillLabel}
         </span>
         <button
           type="button"
           className="icon-btn"
-          aria-label={isPolling ? 'Pause polling' : 'Resume polling'}
-          title={isPolling ? 'Pause polling' : 'Resume polling'}
-          onClick={onPauseToggle}
+          aria-label={isRecording ? 'Pause recording' : 'Resume recording'}
+          title={isRecording ? 'Pause Telescope recording' : 'Resume Telescope recording'}
+          onClick={onRecordingToggle}
         >
-          {isPolling ? <Pause size={15} /> : <Play size={15} />}
+          {isRecording ? <Pause size={15} /> : <Play size={15} />}
         </button>
         <button
           type="button"
@@ -78,10 +88,11 @@ export function Header({
         </button>
         <button
           type="button"
-          className="icon-btn icon-btn--primary"
-          aria-label="Refresh"
-          title="Refresh"
-          onClick={onRefresh}
+          className={'icon-btn' + (isPolling ? ' icon-btn--primary' : '')}
+          aria-label={isPolling ? 'Disable auto-refresh' : 'Enable auto-refresh'}
+          title={isPolling ? 'Auto-refresh on — click to pause' : 'Auto-refresh off — click to resume'}
+          aria-pressed={isPolling}
+          onClick={onPollingToggle}
         >
           <RefreshCw size={15} />
         </button>

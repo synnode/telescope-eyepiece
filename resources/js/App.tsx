@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
+import { RecordingBanner } from './components/RecordingBanner'
 import { useTheme } from './lib/theme'
 import { RequestsScreen } from './screens/Requests'
 import { QueriesScreen } from './screens/Queries'
@@ -36,16 +37,28 @@ function Shell() {
   const { theme, toggleTheme } = useTheme()
   const queryClient = useQueryClient()
 
+  const statusQuery = useQuery({
+    queryKey: ['recording-status'],
+    queryFn: () => api.requests.list({ take: 1 }),
+    refetchInterval: 5000,
+    staleTime: 4000,
+  })
+  const recordingStatus = statusQuery.data?.status ?? 'enabled'
+
   return (
     <div className="app">
       <Header
+        recordingStatus={recordingStatus}
         isPolling={isPolling}
-        onPauseToggle={() => setIsPolling((p) => !p)}
+        onRecordingToggle={async () => {
+          await api.toggleRecording()
+          await queryClient.invalidateQueries({ queryKey: ['recording-status'] })
+        }}
+        onPollingToggle={() => setIsPolling((p) => !p)}
         onClear={async () => {
           await api.clearEntries()
           await queryClient.invalidateQueries()
         }}
-        onRefresh={() => queryClient.invalidateQueries()}
         onMenuToggle={() => setIsSidebarOpen((open) => !open)}
         theme={theme}
         onThemeToggle={toggleTheme}
@@ -53,6 +66,7 @@ function Shell() {
       <div className="app-body">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <main className="main">
+          <RecordingBanner status={recordingStatus} />
           <Outlet context={{ isPolling } satisfies ShellContext} />
         </main>
       </div>
