@@ -6,8 +6,7 @@ function apiUrl(endpoint: string): string {
 }
 
 function eyepieceUrl(endpoint: string): string {
-  const base = getTelescopePath().replace(/\/$/, '')
-  return `${base}/eyepiece-api/${endpoint}`
+  return `/eyepiece-api/${endpoint}`
 }
 
 export type EntryStatus = 'enabled' | 'disabled' | 'paused' | 'off' | 'wrong-cache'

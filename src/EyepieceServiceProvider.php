@@ -34,11 +34,18 @@ class EyepieceServiceProvider extends ServiceProvider
      * middleware group as Telescope's API, so they inherit the same auth
      * gate and CSRF handling without any extra config.
      */
+    /**
+     * Eyepiece's routes live at /eyepiece-api/* — deliberately outside
+     * Telescope's path prefix so they aren't swallowed by Telescope's
+     * /{view?} catch-all (which is registered first via package discovery
+     * order and would otherwise return the SPA HTML instead of our JSON).
+     * Auth still rides the same 'telescope' middleware group.
+     */
     protected function loadRoutes(): void
     {
         Route::group([
             'domain' => config('telescope.domain', null),
-            'prefix' => config('telescope.path', 'telescope').'/eyepiece-api',
+            'prefix' => 'eyepiece-api',
             'middleware' => 'telescope',
         ], function () {
             Route::get('/counts', [CountsController::class, 'index']);
