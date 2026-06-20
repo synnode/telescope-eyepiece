@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Plus, X } from 'lucide-react'
 import {
   PRESET_VIEWS,
@@ -12,6 +13,7 @@ type Props = {
   views?: SavedView[]
   onCreate?: () => void
   onRemove?: (id: string) => void
+  trailing?: ReactNode
 }
 
 export function SavedViewsRow({
@@ -20,6 +22,7 @@ export function SavedViewsRow({
   views = PRESET_VIEWS,
   onCreate,
   onRemove,
+  trailing,
 }: Props) {
   return (
     <div className="views-row" role="toolbar" aria-label="Saved views">
@@ -64,6 +67,7 @@ export function SavedViewsRow({
           New view
         </button>
       )}
+      {trailing && <div className="views-row__trailing">{trailing}</div>}
     </div>
   )
 }

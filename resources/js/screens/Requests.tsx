@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { useOutletContext, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import type { ShellContext } from '../App'
 import { api, type EntryRow, type RequestEntryContent } from '../lib/api'
 import { useEntryList } from '../lib/useEntryList'
 import { useSavedViews } from '../lib/savedViews'
+import { useColumnVisibility, type ColumnDef } from '../lib/columnVisibility'
 import { formatDuration, formatMemoryMB, formatRelative, statusClass } from '../lib/format'
 import { EntryTable, type EntryColumn } from '../components/EntryTable'
 import { VerbBadge } from '../components/VerbBadge'
@@ -12,6 +13,7 @@ import { StatusBadge } from '../components/StatusBadge'
 import { Avatar } from '../components/Avatar'
 import { EntryDetailDrawer } from '../components/EntryDetailDrawer'
 import { PromptModal } from '../components/PromptModal'
+import { ColumnChooser } from '../components/ColumnChooser'
 import { StatCards } from './requests/StatCards'
 import { FilterForm } from './requests/FilterForm'
 import { SavedViewsRow } from './requests/SavedViewsRow'
@@ -25,8 +27,12 @@ import {
   type StatusClass,
 } from './requests/filters'
 
-const GRID_COLUMNS =
-  '52px minmax(220px,1fr) 60px 70px 56px 70px 132px 104px 74px 26px'
+type RequestRow = EntryRow<RequestEntryContent>
+
+type RequestColumnDef = ColumnDef & {
+  render: (row: RequestRow) => ReactNode
+  align?: 'left' | 'right'
+}
 
 export function RequestsScreen() {
   const { isPolling } = useOutletContext<ShellContext>()
@@ -66,6 +72,25 @@ export function RequestsScreen() {
 
   const handleCreateView = useCallback(() => setIsNamingView(true), [])
 
+  const {
+    visibleColumns,
+    visibleKeys,
+    toggle: toggleColumn,
+    reset: resetColumns,
+    gridTemplate,
+  } = useColumnVisibility('eyepiece-cols-requests', REQUEST_COLUMNS)
+
+  const columns: EntryColumn<RequestRow>[] = useMemo(
+    () =>
+      visibleColumns.map((c) => ({
+        key: c.key,
+        label: c.label,
+        align: c.align,
+        render: c.render,
+      })),
+    [visibleColumns],
+  )
+
   const list = useEntryList<RequestEntryContent>({
     queryKey: ['requests', 'list'],
     fetcher: api.requests.list,
@@ -104,12 +129,20 @@ export function RequestsScreen() {
         views={views}
         onCreate={handleCreateView}
         onRemove={removeView}
+        trailing={
+          <ColumnChooser
+            columns={REQUEST_COLUMNS}
+            visibleKeys={visibleKeys}
+            onToggle={toggleColumn}
+            onReset={resetColumns}
+          />
+        }
       />
 
       <EntryTable
-        columns={requestColumns}
+        columns={columns}
         rows={filtered}
-        gridTemplateColumns={GRID_COLUMNS}
+        gridTemplateColumns={gridTemplate('26px')}
         getRowKey={(e) => e.id}
         selectedKey={selectedId}
         onRowClick={(e) => openDetail(e.id)}
@@ -225,15 +258,19 @@ function toMs(v: number | string | null | undefined): number {
   return typeof v === 'number' ? v : Number(v) || 0
 }
 
-const requestColumns: EntryColumn<EntryRow<RequestEntryContent>>[] = [
+const REQUEST_COLUMNS: RequestColumnDef[] = [
   {
     key: 'verb',
     label: 'Verb',
+    width: '52px',
+    mandatory: true,
     render: (e) => <VerbBadge method={e.content.method} />,
   },
   {
     key: 'path',
     label: 'Path',
+    width: 'minmax(220px,1fr)',
+    mandatory: true,
     render: (e) => (
       <span className="cell-path">
         <span className="cell-path__uri">{e.content.uri}</span>
@@ -246,12 +283,14 @@ const requestColumns: EntryColumn<EntryRow<RequestEntryContent>>[] = [
   {
     key: 'status',
     label: 'Status',
+    width: '60px',
     align: 'right',
     render: (e) => <StatusBadge status={e.content.response_status} />,
   },
   {
     key: 'time',
     label: 'Time',
+    width: '70px',
     align: 'right',
     render: (e) => {
       const ms = toMs(e.content.duration)
@@ -263,12 +302,14 @@ const requestColumns: EntryColumn<EntryRow<RequestEntryContent>>[] = [
   {
     key: 'sql',
     label: 'SQL',
+    width: '56px',
     align: 'right',
     render: () => <span className="cell-sql">—</span>,
   },
   {
     key: 'memory',
     label: 'Memory',
+    width: '70px',
     align: 'right',
     render: (e) => (
       <span className="cell-memory">
@@ -279,6 +320,7 @@ const requestColumns: EntryColumn<EntryRow<RequestEntryContent>>[] = [
   {
     key: 'user',
     label: 'User',
+    width: '132px',
     render: (e) => {
       const u = e.content.user
       const name = u?.name ?? u?.email ?? (u ? `user #${u.id}` : 'Guest')
@@ -293,11 +335,13 @@ const requestColumns: EntryColumn<EntryRow<RequestEntryContent>>[] = [
   {
     key: 'ip',
     label: 'IP',
+    width: '104px',
     render: (e) => <span className="cell-ip">{e.content.ip_address ?? '—'}</span>,
   },
   {
     key: 'when',
     label: 'When',
+    width: '74px',
     align: 'right',
     render: (e) => <span className="cell-when">{formatRelative(e.created_at)}</span>,
   },
