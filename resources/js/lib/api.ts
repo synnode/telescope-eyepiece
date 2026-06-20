@@ -81,7 +81,10 @@ export type RequestEntryContent = {
   memory?: number
   user?: RequestUser
   headers?: Record<string, string | string[]>
-  payload?: Record<string, unknown>
+  payload?: Record<string, unknown> | unknown[] | null
+  session?: Record<string, unknown> | null
+  response_headers?: Record<string, string | string[]>
+  response?: unknown
   middleware?: string[]
 }
 

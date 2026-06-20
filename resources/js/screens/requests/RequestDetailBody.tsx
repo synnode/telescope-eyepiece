@@ -54,7 +54,9 @@ export function RequestDetailBody({ detail }: Props) {
       <MetricGrid metrics={metrics} />
       <WhoCard user={content.user} ip={resolveIp(content)} />
       <HeadersBlock headers={content.headers} />
+      <PayloadBlock payload={content.payload} />
       <QueriesBlock queries={queries} dbTime={dbTime} />
+      <ResponseBlock response={content.response} />
     </div>
   )
 }
@@ -120,6 +122,49 @@ function HeadersBlock({
             </div>
           </div>
         ))}
+      </div>
+    </section>
+  )
+}
+
+function PayloadBlock({
+  payload,
+}: {
+  payload?: Record<string, unknown> | unknown[] | null
+}) {
+  if (payload == null) return null
+  const isEmpty =
+    Array.isArray(payload) ? payload.length === 0 : Object.keys(payload).length === 0
+  if (isEmpty) return null
+
+  return (
+    <section className="detail-section">
+      <div className="detail-section__label">Request payload</div>
+      <div className="code-card">
+        <pre className="code-card__sql">{JSON.stringify(payload, null, 2)}</pre>
+      </div>
+    </section>
+  )
+}
+
+function ResponseBlock({ response }: { response: unknown }) {
+  if (response == null) return null
+  const isEmpty =
+    (Array.isArray(response) && response.length === 0) ||
+    (typeof response === 'object' &&
+      !Array.isArray(response) &&
+      Object.keys(response as object).length === 0) ||
+    (typeof response === 'string' && response.length === 0)
+  if (isEmpty) return null
+
+  const body =
+    typeof response === 'string' ? response : JSON.stringify(response, null, 2)
+
+  return (
+    <section className="detail-section">
+      <div className="detail-section__label">Response body</div>
+      <div className="code-card">
+        <pre className="code-card__sql">{body}</pre>
       </div>
     </section>
   )
