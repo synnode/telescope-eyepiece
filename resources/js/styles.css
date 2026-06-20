@@ -552,7 +552,7 @@ input {
   height: 26px;
   padding: 0 11px;
   border-radius: var(--r-pill);
-  border: 1px solid #ececef;
+  border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-muted);
   font-size: 11px;
@@ -561,7 +561,7 @@ input {
 }
 
 .view-pill:hover:not(.is-active) {
-  border-color: #d4d4d8;
+  border-color: var(--border-input);
   color: var(--text);
 }
 
@@ -573,7 +573,7 @@ input {
 
 .view-pill--new {
   border-style: dashed;
-  border-color: #d4d4d8;
+  border-color: var(--border-input);
   color: var(--text-faint);
 }
 
